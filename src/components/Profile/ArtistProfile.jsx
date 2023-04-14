@@ -24,6 +24,8 @@ function ArtistProfile() {
   const [progress, setProgress] = useState(0);
   const [edit, setEdit] = useState(false);
   const [artist, setArtist] = useState([]);
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
   const dispatch = useDispatch();
 
   const { id, ImgURL } = useSelector((state) => state.artist);
@@ -31,9 +33,13 @@ function ArtistProfile() {
   useEffect(() => {
     async function invoke() {
       const profile = await getProfile(id);
-      setArtist(profile.artist);
-      setUploadedUrl(ImgURL);
-      console.log(profile);
+      if (profile.success) {
+        setArtist(profile.artist);
+        setUploadedUrl(ImgURL);
+        setName(profile.artist.name);
+        setEmail(profile.artist.email);
+        console.log(profile);
+      }
     }
     invoke();
   }, []);
@@ -41,18 +47,17 @@ function ArtistProfile() {
     setEdit(!edit);
   };
   const handleEditProfile = async (data) => {
-    console.log(data);
-    if (data) {
-      const response = await updateProfile(data, uploadedUrl);
-      console.log(response);
-      if (response.success) {
-        dispatch(artistAcions.setProfileEdit({
-          artist: response.artist,
-          name: response.name,
-          ImgURL: response.imgUrl,
-        }));
-        toast.success('You have made changes successfully.');
-      }
+    data.preventDefault();
+    const response = await updateProfile(id, name, email, uploadedUrl);
+    console.log(response, 'ggg');
+    if (response.success) {
+      dispatch(artistAcions.setProfileEdit({
+        artist: response.artist,
+        name: response.name,
+        email: response.email,
+        ImgURL: response.imgUrl,
+      }));
+      toast.success('You have made changes successfully.');
     }
   };
   const handleProPic = () => {
@@ -83,9 +88,8 @@ function ArtistProfile() {
           dispatch(artistAcions.setArtistImg(downloadURL));
         });
         async function upload(uri) {
-          const picture = await uploadPicture(uri, id);
+          const picture = await uploadPicture(id, uri);
           if (picture) {
-            console.log(picture, 'pic');
             toast.success(picture.message);
             dispatch(artistAcions.setArtistImg(picture.ImgUrl));
           }
@@ -155,7 +159,8 @@ function ArtistProfile() {
               type="text"
               placeholder="UserName"
               className="w-full rounded-md h-8 bg-[#e8e4ed] text-black"
-              value={artist.name}
+              value={name}
+              onChange={(e) => setName(e.target.value)}
             />
           </div>
           <div>
@@ -164,7 +169,8 @@ function ArtistProfile() {
               type="text"
               placeholder="Enter your email address"
               className="w-full rounded-md h-8 bg-[#efe8f5] text-black"
-              value={artist.email}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
           </div>
           <div className="w-full flex justify-center mt-4">

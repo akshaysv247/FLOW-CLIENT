@@ -39,6 +39,7 @@ function Login() {
               // eslint-disable-next-line no-underscore-dangle
               id: result.user._id,
               ImgURL: result?.user.ImgUrl,
+              email: result?.user.email,
             }),
           );
           toast.success(result.message);

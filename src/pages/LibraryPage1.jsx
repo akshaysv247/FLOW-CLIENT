@@ -9,9 +9,17 @@ import { getMyPlaylists } from '../Api/userApis';
 
 function LibraryPage1() {
   const { id } = useSelector((state) => state.user);
+  const artistId = useSelector((state) => state.artist.id);
   const [playlists, setPlaylists] = useState([]);
   useEffect(() => {
     const invoke = async () => {
+      if (artistId) {
+        const result = await getMyPlaylists(artistId);
+        console.log(result);
+        if (result.success) {
+          setPlaylists(result.myPlaylists);
+        }
+      }
       const result = await getMyPlaylists(id);
       console.log(result);
       if (result.success) {

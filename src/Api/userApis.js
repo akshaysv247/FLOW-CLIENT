@@ -38,9 +38,9 @@ export const uploadPicture = async (uri, id) => {
   }
 };
 
-export const updateProfile = async (id, details) => {
+export const updateProfile = async (id, name, email) => {
   try {
-    const response = await axios.put(`/update-profile/${id}`, { details }, {
+    const response = await axios.put(`/update-profile/${id}`, { name, email }, {
       withCredentials: true,
       headers: {
         Authorization: `Bearer ${localStorage.getItem('token')}`,

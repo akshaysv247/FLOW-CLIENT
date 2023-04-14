@@ -9,6 +9,7 @@ const initialState = {
   artistToken: null,
   id: null,
   ImgURL: null,
+  email: null,
 };
 
 export const ArtistSlice = createSlice({
@@ -21,6 +22,7 @@ export const ArtistSlice = createSlice({
       state.artistToken = action.payload.artistToken;
       state.id = action.payload.id;
       state.ImgURL = action.payload.ImgURL;
+      state.email = action.payload.email;
     },
     setArtistLogout: (state, action) => {
       state.artist = null;
@@ -28,6 +30,7 @@ export const ArtistSlice = createSlice({
       state.artistToken = null;
       state.id = null;
       state.ImgURL = null;
+      state.email = null;
     },
     setArtistImg: (state, action) => {
       state.ImgURL = action.payload;
@@ -36,6 +39,7 @@ export const ArtistSlice = createSlice({
       state.artist = action.payload.artist;
       state.name = action.payload.name;
       state.ImgURL = action.payload.ImgURL;
+      state.email = action.payload.email;
     },
   },
 });

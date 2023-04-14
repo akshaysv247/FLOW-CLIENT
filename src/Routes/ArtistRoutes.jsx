@@ -8,100 +8,85 @@ import ArtistLoginPage from '../pages/ArtistPages/ArtistLoginPage';
 import ArtistProfilePage from '../pages/ArtistPages/ArtistProfilePage';
 import ArtistSignupPage from '../pages/ArtistPages/ArtistSignupPage';
 
-// import ArtistPublicRoute from './utils/ArtistPublicRoute';
-// import ArtistPrivateRoute from './utils/ArtistPrivateRoute';
+import ArtistPublicRoute from '../utils/ArtistPublicRoute';
+import ArtistPrivateRoute from '../utils/ArtistPrivateRoute';
+import ArtistLibraryPage from '../pages/ArtistPages/ArtistLibraryPage';
 
 function ArtistRoutes() {
   return (
     <Routes>
       <Route
         path="/login"
-        element={
-          // <ArtistPublicRoute>
-          <ArtistLoginPage />
-          // </ArtistPublicRoute>
-        }
+        element={(
+          <ArtistPublicRoute>
+            <ArtistLoginPage />
+          </ArtistPublicRoute>
+        )}
       />
       <Route
         path="/signup"
-        element={
-          // <ArtistPublicRoute>
-          <ArtistSignupPage />
-          // </ArtistPublicRoute>
-        }
+        element={(
+          <ArtistPublicRoute>
+            <ArtistSignupPage />
+          </ArtistPublicRoute>
+        )}
       />
       <Route
         path="/home"
-        element={
-          // <ArtistPrivateRoute>
-          <ArtistHomePage />
-          // </ArtistPrivateRoute>
-        }
+        element={(
+          <ArtistPrivateRoute>
+            <ArtistHomePage />
+          </ArtistPrivateRoute>
+        )}
       />
       <Route
         path="/profile"
-        element={
-          // <ArtistPrivateRoute>
-          <ArtistProfilePage />
-          // </ArtistPrivateRoute>
-        }
+        element={(
+          <ArtistPrivateRoute>
+            <ArtistProfilePage />
+          </ArtistPrivateRoute>
+        )}
       />
-      {/* <Route
-        path="/users"
-        element={
-          // <ArtistPrivateRoute>
-          <ArtistHomePage />
-          // </ArtistPrivateRoute>
-        }
-      /> */}
-      {/* <Route
-        path="/artistlist"
-        element={
-          // <ArtistPrivateRoute>
-          <ArtistHomePage />
-          // </ArtistPrivateRoute>
-        }
-      /> */}
       <Route
         path="/library"
-        element={
-          // <ArtistPrivateRoute>
-          <ArtistHomePage />
-          // </ArtistPrivateRoute>
-        }
+        element={(
+          <ArtistPrivateRoute>
+            <ArtistLibraryPage />
+          </ArtistPrivateRoute>
+        )}
       />
       <Route
         path="/track"
-        element={
-          // <ArtistPrivateRoute>
-          <Track />
-          // </ArtistPrivateRoute>
-        }
+        element={(
+          <ArtistPrivateRoute>
+            <Track />
+          </ArtistPrivateRoute>
+        )}
       />
       <Route
         path="/AddTrack"
-        element={
-          // <ArtistPrivateRoute>
-          <AddTrack />
-          // </ArtistPrivateRoute>
-        }
+        element={(
+          <ArtistPrivateRoute>
+            <AddTrack />
+          </ArtistPrivateRoute>
+        )}
       />
       <Route
         path="/create-playlist"
-        element={
-          // <ArtistPrivateRoute>
-          <CreatePlaylist />
-          // </ArtistPrivateRoute>
-        }
+        element={(
+          <ArtistPrivateRoute>
+            <CreatePlaylist />
+          </ArtistPrivateRoute>
+        )}
       />
-      <Route
+      {/* <Route
         path="/copyrights"
         element={
           // <ArtistPrivateRoute>
           <ArtistHomePage />
           // </ArtistPrivateRoute>
         }
-      />
+      /> */}
     </Routes>
   );
 }

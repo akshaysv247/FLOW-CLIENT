@@ -38,6 +38,7 @@ function ArtistLogin() {
               artistToken: result.token,
               id: result.artist._id,
               ImgURL: result?.artist.ImgUrl,
+              email: result?.artist.email,
             }),
           );
           navigate('/artist/home');

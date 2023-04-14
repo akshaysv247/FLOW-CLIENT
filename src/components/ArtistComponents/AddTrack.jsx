@@ -16,19 +16,21 @@ import {
 import { storage } from '../../Config/firebase.config';
 import ArtistHeader from '../Header/ArtistHeader';
 import ArtistSidebar from '../Sidebar/ArtistSidebar';
-import axios from '../../Axios/Axios';
-import { getCategory } from '../../Api/artistApi';
+import { getCategory, addTrack } from '../../Api/artistApi';
 import Progress from '../HelperComponents/Progress';
+import { LANG } from '../../constants/lang';
 
 function AddTrack() {
   const { register, formState: { errors }, handleSubmit } = useForm();
   const [img, setImg] = useState();
   const [audio, setAudio] = useState('');
   const [Category, setCategory] = useState([]);
-  const [value, setValue] = useState('Pop');
   const [loading, setLoading] = useState(false);
   const [loadingAudio, setLoadingAudio] = useState(false);
   const [progress, setProgress] = useState(0);
+  const [language, setLanguage] = useState(LANG[0]);
+  const [selectedCat, setSelectedCat] = useState('');
+  const [uploadedImg, setUploadedImg] = useState('');
   const { name, id } = useSelector((state) => state.artist);
   const navigate = useNavigate();
 
@@ -82,6 +84,7 @@ function AddTrack() {
           getDownloadURL(uploadtask.snapshot.ref).then((downloadURL) => {
             console.log(downloadURL);
             setImg(downloadURL);
+            setUploadedImg(downloadURL);
           });
         },
       );
@@ -90,20 +93,16 @@ function AddTrack() {
     }
   };
 
-  const upload = async (data) => {
-    console.log(data, 'fgsdg', name);
-    if (data && img && audio) {
+  const upload = async (datas) => {
+    console.log(datas, 'fgsdg', name);
+    if (datas && img && audio) {
       try {
-        await axios.post(`/artist/addtrack/${id}`, {
-          data, img, audio, name, value,
-        }).then((response) => {
-          console.log(response);
-          const result = response.data;
-          if (result.success) {
-            console.log(result);
-            navigate('/artist/track');
-          }
-        });
+        const result = await addTrack(id, datas, img, audio, name, selectedCat, language);
+        if (result.success) {
+          console.log(result);
+          navigate('/artist/track');
+        }
+        // });
       } catch (error) {
         console.log(error);
       }
@@ -115,12 +114,13 @@ function AddTrack() {
       if (!response.success) {
         navigate('/artist/login');
       }
+      setSelectedCat(response.category[0].name);
       setCategory(response?.category);
     }
     invoke();
   }, []);
   return (
-    <div className="container w-[100%] h-screen bg-[#050514] flex flex-col text-white">
+    <div className="w-[100%] h-screen bg-[#050514] flex flex-col text-white">
       <div className="w-full h-20">
         <ArtistHeader />
       </div>
@@ -160,45 +160,44 @@ function AddTrack() {
                 {errors?.albumName && <p className="text-red-600">{errors.albumName.message}</p>}
                 <h1>CATEGORY</h1>
                 <select
-                  className="bg-blue-500 w-52 flex justify-center items-center"
-                  value={value}
-                  onChange={(e) => setValue(e.target.value)}
+                  className="bg-blue-500 w-52 flex justify-center items-center outline-none"
+                  value={selectedCat}
+                  onChange={(e) => setSelectedCat(e.target.value)}
                 >
                   {Category?.map((category) => (
                     <option key={category?._id} value={category?.name}>{category?.name}</option>
                   ))}
                 </select>
                 <h1>LANGUAGE</h1>
-                <input
-                  type="text"
-                  className="w-full p-2 rounded-md text-black"
-                  placeholder="Enter the language of the song"
-                  {...register('language', {
-                    required: 'Fill this field',
-                    maxLength: { value: 20, message: 'Field can not exceed 20 characters' },
-                    minLength: { value: 4, message: 'Field should be atleast 4 characters' },
-                  })}
-                />
-                {errors?.language && <p className="text-red-600">{errors.language.message}</p>}
+                <select
+                  className="bg-blue-500 w-52 flex justify-center items-center"
+                  value={language}
+                  onChange={(e) => setLanguage(e.target.value)}
+                >
+                  {LANG?.map((lan) => (
+                    <option key={lan?._id} value={lan}>{lan}</option>
+                  ))}
+                </select>
               </div>
               <div className="flex flex-col gap-2 p-5 w-[48%] items-center">
-                <label className="w-[100%] h-40 bg-[#042a3b] flex flex-col justify-center items-center">
-                  <p className="text-lg text-black text-center">
-                    {!loading ? <CloudUploadIcon /> : <Progress value={progress} />}
-                  </p>
-                  <p className="text-black">Upload the Image file </p>
-                  <div>
-                    <input
-                      type="file"
-                      name="imgFile"
-                      accept="image/*"
-                      className="w-full h-7"
-                        // value={img}
-                      onChange={handleImgUpload}
-                    />
-                  </div>
-                  {/* <Button variant="contained" onClick={handleImgUpload}>Upload</Button> */}
-                </label>
+                {uploadedImg ? <img src={uploadedImg} alt="songImg" className="w-44 object-cover object-center bg-cover bg-center" /> : (
+                  <label className="w-[100%] h-40 bg-[#042a3b] flex flex-col justify-center items-center">
+                    <p className="text-lg text-black text-center">
+                      {!loading ? <CloudUploadIcon /> : <Progress value={progress} />}
+                    </p>
+                    <p className="text-black">Upload the Image file </p>
+                    <div>
+                      <input
+                        type="file"
+                        name="imgFile"
+                        accept="image/*"
+                        className="w-full h-7"
+                        onChange={handleImgUpload}
+                      />
+                    </div>
+                    {/* <Button variant="contained" onClick={handleImgUpload}>Upload</Button> */}
+                  </label>
+                )}
                 <label className="w-[100%] h-40 bg-[#042a] flex flex-col justify-center items-center">
                   <p className="text-lg text-black text-center">
                     {!loadingAudio ? <CloudUploadIcon /> : <Progress value={progress} />}
@@ -210,7 +209,6 @@ function AddTrack() {
                       name="audioFile"
                       accept="audio/*"
                       className="w-full h-7"
-                        // value={audio}
                       onChange={handleAudioUpload}
                     />
                   </div>

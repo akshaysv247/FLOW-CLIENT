@@ -34,7 +34,6 @@ function Profile() {
   useEffect(() => {
     async function invoke() {
       const result = await getProfile(id);
-      console.log(result);
       if (!result.success) {
         navigate('/');
       } else {
@@ -53,16 +52,15 @@ function Profile() {
 
   const handleEditProfile = async (data) => {
     data.preventDefault();
-    const change = {
-      name, email,
-    };
-    console.log(change, 'change');
     if (data) {
-      const result = await updateProfile(id, change);
+      const result = await updateProfile(id, name, email);
       if (result) {
-        console.log(result, 'dddf');
         setName(result.name);
         setEmail(result.email);
+        dispatch(userActions.setUpdateProfile({
+          name: result.name,
+          email: result.email,
+        }));
       }
     }
   };
@@ -77,7 +75,6 @@ function Profile() {
     if (imageUpload == null) return;
     const imageRef = ref(storage, `profile/${imageUpload.name}`);
     const uploadImage = uploadBytesResumable(imageRef, imageUpload);
-    console.log(uploadImage);
     uploadImage.on(
       'state_changed',
       (snapshot) => {

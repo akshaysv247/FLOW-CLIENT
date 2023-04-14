@@ -5,7 +5,7 @@ import ArtistSidebar from '../../components/Sidebar/ArtistSidebar';
 
 function ArtistProfilePage() {
   return (
-    <div className="container w-[100%] h-full bg-[#050514] flex flex-col text-white">
+    <div className="w-[100%] h-full bg-[#050514] flex flex-col text-white overflow-hidden">
       <div className="w-full h-20">
         <ArtistHeader />
       </div>
