@@ -47,7 +47,7 @@ function ArtistLogin() {
           setError(result.message);
         }
       } catch (err) {
-        toast.error(err.message);
+        toast.error('Ivalid Password or email');
       }
     },
     validate: (values) => {

@@ -91,7 +91,6 @@ function AdminAddTrack() {
       'state_changed',
       (snapshot) => {
         const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
-        // setProgresspercent(progress);
         console.log(progress);
       },
       (error) => {

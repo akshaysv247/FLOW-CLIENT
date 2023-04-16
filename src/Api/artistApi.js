@@ -74,8 +74,9 @@ export const getAllTracks = async (id) => {
 };
 
 export const addTrack = async (id, datas, img, audio, name, selectedCat, language) => {
+  console.log(id, datas, img, audio, name, selectedCat, language, 'items');
   try {
-    const response = await axios.post(`/artist/addtrack/${id}`, {
+    const response = await axios.post(`/artist/add-track/${id}`, {
       datas, img, audio, name, selectedCat, language,
     }, {
       withCredentials: true,
@@ -148,7 +149,7 @@ export const getLikedSongs = async (id) => {
     const response = await axios.get(`/artist/get-liked-songs/${id}`, {
       withCredentials: true,
       headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
+        Authorization: `Bearer ${localStorage.getItem('artistToken')}`,
       },
     });
     const { data } = response;
@@ -165,7 +166,7 @@ export const addNewPlaylist = async (id) => {
     const response = await axios.post(`/artist/add-new-playlist/${id}`, {}, {
       withCredentials: true,
       headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
+        Authorization: `Bearer ${localStorage.getItem('artistToken')}`,
       },
     });
     const { data } = response;
@@ -181,7 +182,7 @@ export const getMyPlaylists = async (id) => {
     const response = await axios.get(`/artist/get-my-playlists/${id}`, {
       withCredentials: true,
       headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
+        Authorization: `Bearer ${localStorage.getItem('artistToken')}`,
       },
     });
     const { data } = response;
@@ -197,7 +198,7 @@ export const getSongsForPlayist = async () => {
     const response = await axios.get('/artist/get-songs-for-playlist', {
       withCredentials: true,
       headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
+        Authorization: `Bearer ${localStorage.getItem('artistToken')}`,
       },
     });
     const { data } = response;
@@ -210,12 +211,11 @@ export const getSongsForPlayist = async () => {
 };
 
 export const updateMyPlaylist = async (obj, id) => {
-  console.log(id, obj);
   try {
     const response = await axios.put(`/artist/update-playlist/${id}`, obj, {
       withCredentials: true,
       headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
+        Authorization: `Bearer ${localStorage.getItem('artistToken')}`,
       },
     });
     console.log(response, 'response');
@@ -233,7 +233,7 @@ export const checkLikedSong = async (id, songId) => {
     const response = await axios.get(`/artist/check-liked/${id}/${songId}`, {
       withCredentials: true,
       headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
+        Authorization: `Bearer ${localStorage.getItem('artistToken')}`,
       },
     });
     const { data } = response;
@@ -250,7 +250,7 @@ export const getSpecificPlaylist = async (id) => {
     const response = await axios.get(`/artist/get-specific-playlist/${id}`, {
       withCredentials: true,
       headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
+        Authorization: `Bearer ${localStorage.getItem('artistToken')}`,
       },
     });
     const { data } = response;
@@ -263,12 +263,11 @@ export const getSpecificPlaylist = async (id) => {
 };
 
 export const FollowArtist = async (id, artistId) => {
-  console.log(id, artistId, 'fIds');
   try {
     const response = await axios.post(`/artist/follow-artist/${id}/${artistId}`, {}, {
       withCredentials: true,
       headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
+        Authorization: `Bearer ${localStorage.getItem('artistToken')}`,
       },
     });
     const { data } = response;
@@ -284,7 +283,7 @@ export const UnfollowArtist = async (id, artistId) => {
     const response = await axios.delete(`/artist/unfollow-artist/${id}/${artistId}`, {
       withCredentials: true,
       headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
+        Authorization: `Bearer ${localStorage.getItem('artistToken')}`,
       },
     });
     const { data } = response;
@@ -301,7 +300,7 @@ export const isFollowing = async (id, artistId) => {
     const response = await axios.get(`/artist/is-following/${id}/${artistId}`, {
       withCredentials: true,
       headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
+        Authorization: `Bearer ${localStorage.getItem('artistToken')}`,
       },
     });
     const { data } = response;

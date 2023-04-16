@@ -142,6 +142,7 @@ export const LikeSong = async (trackId, userId) => {
   }
 };
 export const getLikedSongs = async (id) => {
+  console.log('isIsd', id);
   try {
     const response = await axios.get(`/get-liked-songs/${id}`, {
       withCredentials: true,

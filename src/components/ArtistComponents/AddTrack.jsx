@@ -13,6 +13,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import {
   ref, getDownloadURL, uploadBytesResumable,
 } from 'firebase/storage';
+
 import { storage } from '../../Config/firebase.config';
 import ArtistHeader from '../Header/ArtistHeader';
 import ArtistSidebar from '../Sidebar/ArtistSidebar';
@@ -37,30 +38,23 @@ function AddTrack() {
   const handleAudioUpload = (e) => {
     setAudio(e.target.files[0]);
     setLoadingAudio(true);
-    console.log(audio);
-    if (audio == null) { return; }
-    const audioref = ref(storage, `/audio/${audio.name}`);
-    console.log(audioref);
-    const uploadtask = uploadBytesResumable(audioref, audio);
-    uploadtask.on(
-      'state_changed',
-      (snapshot) => {
-        const progres = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
-        // setProgresspercent(progress);
-        console.log(progres);
-        setProgress(progres);
-      },
-      (error) => {
-        console.log(error);
-      },
-      () => {
-        getDownloadURL(uploadtask.snapshot.ref).then((downloadURL) => {
-          console.log(downloadURL);
-          setAudio(downloadURL);
-        });
-      },
-    );
+
+    const audioref = ref(storage, `/audio/${e.target.files[0].name}`);
+    const uploadtask = uploadBytesResumable(audioref, e.target.files[0]);
+
+    uploadtask.on('state_changed', (snapshot) => {
+      const progres = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+      setProgress(progres);
+    }, (error) => {
+      console.log(error);
+    }, () => {
+      getDownloadURL(uploadtask.snapshot.ref).then((downloadURL) => {
+        console.log(downloadURL);
+        setAudio(downloadURL);
+      });
+    });
   };
+
   const handleImgUpload = (e) => {
     setImg(e.target.files[0]);
     setLoading(true);
@@ -101,6 +95,8 @@ function AddTrack() {
         if (result.success) {
           console.log(result);
           navigate('/artist/track');
+        } else {
+          toast.error(result.message);
         }
         // });
       } catch (error) {
