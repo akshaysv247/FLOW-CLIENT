@@ -15,7 +15,6 @@ import { AdminSlice } from './Slice/AdminSlice';
 import { UserSlice } from './Slice/UserSlice';
 import { ArtistSlice } from './Slice/ArtistSlice';
 import { songSlice } from './Slice/SongSlice';
-import PlayerSlice from './Slice/PlayerSlice';
 
 const persistConfigUser = { key: 'user', storage, version: 1 };
 const persistConfigArtist = { key: 'artist', storage, version: 1 };
@@ -33,7 +32,6 @@ export const store = configureStore({
     admin: AdminPersistReducer,
     artist: ArtistPersistReducer,
     song: SongPersistReducer,
-    player: PlayerSlice,
   },
   middleware: (getDefaultMiddleware) =>
     // eslint-disable-next-line implicit-arrow-linebreak
