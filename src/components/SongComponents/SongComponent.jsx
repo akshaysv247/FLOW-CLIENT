@@ -1,3 +1,4 @@
+/* eslint-disable object-shorthand */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable react/prop-types */
 import React, { useEffect, useState } from 'react';
@@ -52,10 +53,14 @@ function SongComponent({ song, setSong }) {
     setSong(song);
     dispatch(
       songActions.setSongDetails({
-        song,
+        song: song,
+      }),
+      songActions.setPlaylist({
+        played: song,
       }),
     );
   };
+  const handleReport = () => {};
 
   return (
     <div key={song._id} className="w-full h-16 border rounded-md flex justify-between">
@@ -97,7 +102,7 @@ function SongComponent({ song, setSong }) {
           <MenuItem onClick={handleClose}>
             Add to Playlist
           </MenuItem>
-          <MenuItem>Report</MenuItem>
+          <MenuItem onClick={handleReport}>Report</MenuItem>
         </Menu>
       </div>
     </div>

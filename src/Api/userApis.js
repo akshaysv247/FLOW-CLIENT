@@ -311,3 +311,21 @@ export const isFollowing = async (id, artistId) => {
     return error.response.data.error;
   }
 };
+
+export const getCommonSongs = async (category, song) => {
+  try {
+    const response = await axios.get(`/get-common-songs/${category}/${song}`, {
+      withCredentials: true,
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+    });
+    const { data } = response;
+    console.log(data, 'data');
+    if (data) {
+      return data;
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};

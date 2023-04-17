@@ -15,6 +15,7 @@ import {
 import { userActions } from '../../Redux/Slice/UserSlice';
 import { search } from '../../Api/userApis';
 import Logo from '../Logo/Logo';
+import SearchResult from '../SearchComponent/SearchResult';
 
 // eslint-disable-next-line no-unused-vars
 const UserBox = styled(Box)(({ theme }) => ({
@@ -68,6 +69,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 function Header() {
   const { name, ImgURL } = useSelector((state) => state.user);
   const [searching, setSearching] = useState('');
+  const [result, setResult] = useState([]);
   const [item, setItem] = useState('Tracks');
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
@@ -78,6 +80,9 @@ function Header() {
     console.log(item);
     const response = await search(searching, item);
     console.log(response);
+    if (response.success) {
+      setResult(response.tracks);
+    }
   };
 
   const handleSubmit = (e) => {
@@ -126,6 +131,7 @@ function Header() {
                 <option>Artist</option>
               </select>
             </form>
+            {searching && <SearchResult resutl={result} />}
           </div>
         </div>
         <div>

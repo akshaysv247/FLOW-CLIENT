@@ -1,3 +1,5 @@
+/* eslint-disable import/no-named-as-default-member */
+/* eslint-disable import/no-named-as-default */
 import React from 'react';
 import './App.css';
 import { Routes, Route, BrowserRouter as Router } from 'react-router-dom';

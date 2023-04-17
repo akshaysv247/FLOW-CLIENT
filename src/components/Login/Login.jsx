@@ -29,6 +29,7 @@ function Login() {
       };
       try {
         const result = await userLogin(obj);
+        console.log(result);
         if (result.success) {
           localStorage.setItem('token', result.token);
           dispatch(

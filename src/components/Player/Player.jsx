@@ -9,6 +9,7 @@
 /* eslint-disable jsx-a11y/media-has-caption */
 /* eslint-disable react/jsx-no-comment-textnodes */
 import React, { useState, useEffect, useRef } from 'react';
+import { useSelector } from 'react-redux';
 import {
   styled,
   Typography,
@@ -30,7 +31,7 @@ import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 import VolumeMuteIcon from '@mui/icons-material/VolumeMute';
 import VolumeDownIcon from '@mui/icons-material/VolumeDown';
 // ----------------------------------------------------------------
-import { getCommonSongs } from '../../Api/generalApi';
+import { getCommonSongs } from '../../Api/userApis';
 // #-Styled Components----------------------------------------------------------------
 const Div = styled('div')(({ theme }) => ({
   backgroundColor: 'transparent',
@@ -87,10 +88,13 @@ const VSlider = styled(Slider)(({ theme, ...props }) => ({
 // ----------------------------------------------------------------
 
 function Player({ song }) {
-  console.log(song, 'song is here');
+  const played = useSelector((state) => state.played);
+  console.log(played, 'plyed');
+  const [track, setTrack] = useState('');
   const audioPlayer = useRef();
-  const [index, setIndex] = useState(0);
+  // const [index, setIndex] = useState(0);
   const [playlist, setPlaylist] = useState([]);
+  const [nextSong, setNextSong] = useState('');
   const [isPlaying, setIsPlaying] = useState(false);
   const [volume, setVolume] = useState(50);
   const [mute, setMute] = useState(false);
@@ -98,10 +102,17 @@ function Player({ song }) {
   const [duration, setDuration] = useState(0);
 
   useEffect(() => {
+    setTrack(song);
+    console.log(track, 'track');
     async function invoke() {
-      const list = await getCommonSongs(song);
-      console.log(list);
-      setPlaylist(list);
+      setPlaylist(null);
+      const list = await getCommonSongs(track.category, track._id);
+      console.log(list.songs, 'list');
+      if (list.songs.length > 1) {
+        setPlaylist(list.songs);
+      } else {
+        setNextSong(list.songs[0]);
+      }
     }
     invoke();
   }, [song]);
@@ -151,21 +162,30 @@ function Player({ song }) {
     audioPlayer.current.currentTime -= 10;
   };
   const toggleSkipForward = () => {
-    if (index >= playlist.length - 1) {
-      setIndex(0);
-      audioPlayer.current.src = playlist[0];
+    // if (index >= playlist.length - 1) {
+    //   setIndex(0);
+    //   audioPlayer.current.src = playlist[0];
+    //   audioPlayer.current.play();
+    // } else {
+    //   setIndex((prev) => prev + 1);
+    //   audioPlayer.current.src = playlist[index + 1];
+    // }
+    if (nextSong) {
+      audioPlayer.current.src = nextSong.songURL;
+      setTrack(nextSong);
       audioPlayer.current.play();
-    } else {
-      setIndex((prev) => prev + 1);
-      audioPlayer.current.src = playlist[index + 1];
+    } else if (playlist.length > 0) {
+      audioPlayer.current.src = playlist[0].songURL;
+      audioPlayer.current.play();
     }
   };
   const toggleSkipBack = () => {
-    if (index > 0) {
-      setIndex((prev) => prev - 1);
-      audioPlayer.current.src = playlist[index - 1];
-      audioPlayer.current.play();
-    }
+    // if (index > 0) {
+    //   setIndex((prev) => prev - 1);
+    //   audioPlayer.current.src = playlist[index - 1];
+    //   audioPlayer.current.play();
+    // }
+
   };
 
   function VolmBtns() {
@@ -176,20 +196,20 @@ function Player({ song }) {
   }
   return (
     <Div>
-      <audio src={song?.songURL} ref={audioPlayer} muted={mute} autoPlay />
+      <audio src={track?.songURL} ref={audioPlayer} muted={mute} autoPlay />
       <CustomPaper>
         <IBox>
           {
-            song?.imgURL && (
-            <Box sx={{ display: 'flex', gap: '10px' }}>
-              <Stack>
-                <img src={song?.imgURL} alt="song" className="w-full h-[4rem]" />
-              </Stack>
-              <Stack sx={{ display: 'flex', alignContent: 'center' }}>
-                <p className="text-sm font-thin">{song?.name}</p>
-                <p className="text-sm font-thin">{song?.artist}</p>
-              </Stack>
-            </Box>
+            track?.imgURL && (
+              <Box sx={{ display: 'flex', gap: '10px' }}>
+                <Stack>
+                  <img src={track?.imgURL} alt="song" className="w-full h-[4rem]" />
+                </Stack>
+                <Stack sx={{ display: 'flex', alignContent: 'center' }}>
+                  <p className="text-sm font-thin">{track?.name}</p>
+                  <p className="text-sm font-thin">{track?.artist}</p>
+                </Stack>
+              </Box>
             )
 }
         </IBox>
