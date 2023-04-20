@@ -70,26 +70,39 @@ function Header() {
   const { name, ImgURL } = useSelector((state) => state.user);
   const [searching, setSearching] = useState('');
   const [result, setResult] = useState([]);
+  const [arts, setArts] = useState([]);
+  const [plays, setPlays] = useState([]);
   const [item, setItem] = useState('Tracks');
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const handleSearch = async (e) => {
-    e.preventDefault();
-    console.log(searching);
-    console.log(item);
+
+  const handleSearch = async () => {
     const response = await search(searching, item);
     console.log(response);
     if (response.success) {
-      setResult(response.tracks);
+      if (response.tracks) {
+        setResult(response.tracks);
+      }
+      if (response.artists) {
+        setArts(response.artists);
+      }
+      if (response.playlists) {
+        setPlays(response.playlists);
+      }
+      console.log(result, 'resss');
     }
   };
 
   const handleSubmit = (e) => {
-    // e.preventDefault();
-    if (e.key === 'Enter') {
-      handleSearch(e);
-    }
+    e.preventDefault();
+    handleSearch();
+    // if (e.key === 'Enter') {
+    //   handleSearch(e);
+    // }
+  };
+  const handleChange = (e) => {
+    setSearching(e.target.value);
   };
 
   const handleLogout = () => {
@@ -112,7 +125,7 @@ function Header() {
         </div>
         <div className="">
           <div className="bg-[#0301035c] sm:w-fit px-2 h-12 flex items-center justify-center rounded-lg">
-            <form onSubmit={handleSearch} className="flex items-center gap-1">
+            <form onSubmit={handleSubmit} className="flex items-center gap-1">
               <Search>
                 <SearchIconWrapper>
                   <SearchIcon />
@@ -121,8 +134,8 @@ function Header() {
                   placeholder="Search…"
                   inputProps={{ 'aria-label': 'search' }}
                   value={searching}
-                  onChange={(e) => setSearching(e.target.value)}
-                  onKeyDown={handleSubmit}
+                  onChange={handleChange}
+                  // onKeyDown={handleSubmit}
                 />
               </Search>
               <select value={item} className="bg-[#240d42c4] h-[2.3rem] text-sm text-gray-500 rounded-md" onChange={(e) => setItem(e.target.value)}>
@@ -131,7 +144,7 @@ function Header() {
                 <option>Artist</option>
               </select>
             </form>
-            {searching && <SearchResult resutl={result} />}
+            {searching && <SearchResult result={result} arts={arts} plays={plays} />}
           </div>
         </div>
         <div>
