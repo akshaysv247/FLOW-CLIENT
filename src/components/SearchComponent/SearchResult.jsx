@@ -7,7 +7,7 @@ import MyPlaylistCards from '../Playlist/MyPlaylistCards';
 
 function SearchResult({ result, arts, plays }) {
   return (
-    <div className="absolute top-20 bg-[#790be056] w-[45vw] h-[40vh] flex flex-col items-center justify-start">
+    <div className="absolute top-20 bg-[#790be056] w-[45vw] h-fit flex flex-col items-center justify-start">
       {result && (
       <div className="w-full px-4 py-2 h-[40vh] flex flex-col gap-2 items-center overflow-auto">
         {result.map((item) => (
@@ -16,7 +16,7 @@ function SearchResult({ result, arts, plays }) {
       </div>
       )}
       {arts && (
-        <div className="flex flex-wrap px-4 py-2 h-[40vh] w-[45vw] gap-2">
+        <div className="flex flex-wrap px-4 py-2  w-[45vw] gap-2">
           {arts.map((item) => (
             <ArtistCard artist={item} />
           ))}
@@ -24,7 +24,7 @@ function SearchResult({ result, arts, plays }) {
       )}
       {
         plays && (
-          <div className="flex flex-wrap px-4 py-2 h-[40vh] w[45vw] gap-2 justify-start">
+          <div className="flex flex-wrap px-4 py-2 w[45vw] gap-2 justify-start">
             {plays.map((item) => (
               <MyPlaylistCards list={item} />
             ))}
