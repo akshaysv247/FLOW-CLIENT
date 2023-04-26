@@ -311,3 +311,37 @@ export const isFollowing = async (id, artistId) => {
     return error.response.data.error;
   }
 };
+
+export const getHiddenSongsOfAnArtist = async (id) => {
+  try {
+    const response = await axios.get(`/artist/get-hidden-songs-of-artist/${id}`, {
+      withCredentials: true,
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('artistToken')}`,
+      },
+    });
+    const { data } = response;
+    if (data) {
+      return data;
+    }
+  } catch (error) {
+    return error.reponse.data.error;
+  }
+};
+
+export const getFollowers = async (id) => {
+  try {
+    const response = await axios.get(`/artist/get-followers/${id}`, {
+      withCredentials: true,
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('artistToken')}`,
+      },
+    });
+    const { data } = response;
+    if (data) {
+      return data;
+    }
+  } catch (error) {
+    return error.response.data.error;
+  }
+};

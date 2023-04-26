@@ -61,10 +61,11 @@ export const userSignup = async (obj) => {
   }
 };
 
-export const resetPassword = async () => {
+export const resetPassword = async (datas, role, email) => {
   try {
-    const response = await axios.post('/reset-password');
+    const response = await axios.post('/reset-password', { datas, role, email });
     const { data } = response;
+    console.log(data, 'dat');
     if (data) {
       return data;
     }

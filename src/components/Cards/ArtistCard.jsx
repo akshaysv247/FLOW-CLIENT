@@ -43,11 +43,9 @@ function ArtistCard({ artist, setToasting }) {
     <div key={artist._id} className="w-52 h-72 bg-gradient-to-r from-[#29073d] to-[#0e030e] rounded-md hover:scale-105 flex flex-col items-center py-2 gap-2">
       <div className="w-44 h-52 bg-[#431643] rounded relative">
         {artist ? <img src={artist?.ImgUrl} className="h-full object-cover object-center rounded" alt="img" /> : <img src={noProfile} alt="img" className="h-full object-cover object-center rounded" />}
-        <div className="absolute bottom-1 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
-          <h2 className="text-white font-bold text-lg text-center shadow-lg">{artist.name}</h2>
-        </div>
       </div>
       <div>
+        <h2 className="text-white font-bold text-sm text-center shadow-lg">{artist.name}</h2>
         {!following
           ? <Button onClick={handleFollow} fullWidth variant="contained" sx={{ backgroundColor: 'violet', color: '#0d0225', '&:hover': { backgroundColor: 'green', scale: '1.2' } }}>Follow</Button>
           : <Button onClick={handleUnFollow} fullWidth variant="contained" sx={{ backgroundColor: 'red', color: '#0d0225', '&:hover': { backgroundColor: 'violet', scale: '1.2' } }}>Unfollow</Button>}

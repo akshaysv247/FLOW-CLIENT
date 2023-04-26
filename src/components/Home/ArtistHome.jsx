@@ -1,6 +1,7 @@
 import React from 'react';
 import ArtistHeader from '../Header/ArtistHeader';
 import ArtistSidebar from '../Sidebar/ArtistSidebar';
+import ArtistDashbord from '../ArtistComponents/ArtistDashbord';
 // import Player from '../Player/Player';
 
 function ArtistHome() {
@@ -13,13 +14,10 @@ function ArtistHome() {
         <div className="h-fit">
           <ArtistSidebar />
         </div>
-        <div className="flex-auto h-full bg-transparent rounded-md">
-          <h1>Dashboard</h1>
+        <div className="flex-auto h-full bg-transparent rounded-md p-2">
+          <ArtistDashbord />
         </div>
       </div>
-      {/* <div>
-        <Player />
-      </div> */}
     </div>
   );
 }

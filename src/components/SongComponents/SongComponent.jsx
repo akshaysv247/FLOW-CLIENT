@@ -10,6 +10,7 @@ import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+// import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { songActions } from '../../Redux/Slice/SongSlice';
 import { LikeSong, checkLikedSong } from '../../Api/userApis';
@@ -17,6 +18,7 @@ import { LikeSong, checkLikedSong } from '../../Api/userApis';
 const ITEM_HEIGHT = 48;
 
 function SongComponent({ song, setSong }) {
+  // const navigate = useNavigate();
   const dispatch = useDispatch();
   const { id } = useSelector((state) => state.user);
   const [liked, setLiked] = useState(true);
@@ -60,6 +62,9 @@ function SongComponent({ song, setSong }) {
       }),
     );
   };
+  const handlePlaylist = () => {
+    // navigate('')
+  };
   const handleReport = () => {};
 
   return (
@@ -99,7 +104,7 @@ function SongComponent({ song, setSong }) {
             },
           }}
         >
-          <MenuItem onClick={handleClose}>
+          <MenuItem onClick={handlePlaylist}>
             Add to Playlist
           </MenuItem>
           <MenuItem onClick={handleReport}>Report</MenuItem>

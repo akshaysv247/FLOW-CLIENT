@@ -8,7 +8,7 @@ import Button from '@mui/material/Button';
 import toast, { Toaster } from 'react-hot-toast';
 import { RecaptchaVerifier, signInWithPhoneNumber } from 'firebase/auth';
 import { Auth } from '../../Config/firebase.config';
-import axios from '../../Axios/Axios';
+import { resetPassword } from '../../Api/authentication';
 
 function ResetPassword() {
   const [otpVerified, SetOtpVerified] = useState(false);
@@ -92,17 +92,16 @@ function ResetPassword() {
       toast.error(err.message);
     }
   };
-  const resetPassword = (data) => {
+  const resetthePassword = async (data) => {
     if (data && role) {
-      axios.post('/resetPassword', { data, role, email }).then((response) => {
-        const result = response.data;
-        if (result.success) {
-          toast.success(result.message);
-          navigate('/');
-        } else {
-          toast.error(result.message);
-        }
-      });
+      const result = await resetPassword(data, role, email);
+      console.log(result, 'resss');
+      if (result.success) {
+        toast.success(result.message);
+        navigate('/');
+      } else {
+        toast.error(result.message);
+      }
     }
   };
   useEffect(() => {
@@ -142,7 +141,7 @@ function ResetPassword() {
   };
 
   return (
-    <div className="container w-screen h-screen bg-hero flex justify-center items-center bg-cover bg-center">
+    <div className="w-[100vw] h-[100vh] bg-hero flex justify-center items-center bg-cover bg-center">
       <Toaster
         position="bottom-center"
         reverseOrder={false}
@@ -150,7 +149,7 @@ function ResetPassword() {
       {otpVerified
         ? (
           <div>
-            <form onSubmit={handleSubmit(resetPassword)} className="w-508 h-510 bg-[#ff00e1b6] flex flex-col justify-center p-10 rounded-lg hover:ease-in-out transition-all">
+            <form onSubmit={handleSubmit(resetthePassword)} className="w-508 h-510 bg-[#ff00e1b6] flex flex-col justify-center p-10 rounded-lg hover:ease-in-out transition-all">
               <h1 className="text-3xl text-center font-extrabold">Enter Your New Password</h1>
               <div className="w-full flex flex-col mt-2">
                 <h1 className="text-white">Password:</h1>
