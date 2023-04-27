@@ -88,11 +88,10 @@ const VSlider = styled(Slider)(({ theme, ...props }) => ({
 // ----------------------------------------------------------------
 
 function Player({ song }) {
-  const played = useSelector((state) => state.played);
-  console.log(played, 'plyed');
+  const List = useSelector((state) => state.song.list.list);
   const [track, setTrack] = useState('');
   const audioPlayer = useRef();
-  // const [index, setIndex] = useState(0);
+  const [index, setIndex] = useState(null);
   const [playlist, setPlaylist] = useState([]);
   const [nextSong, setNextSong] = useState('');
   const [isPlaying, setIsPlaying] = useState(false);
@@ -118,12 +117,25 @@ function Player({ song }) {
   }, [song]);
 
   useEffect(() => {
+    if (index != null) {
+      setTrack(List[index]);
+    }
+  }, [index]);
+
+  useEffect(() => {
     if (audioPlayer) {
       audioPlayer.current.volume = volume / 100;
     }
     if (song) {
       setIsPlaying(true);
     }
+  }, [
+    volume,
+    // isPlaying,
+    song,
+  ]);
+
+  useEffect(() => {
     if (isPlaying) {
       setInterval(() => {
         const _duration = Math.floor(audioPlayer?.current?.duration);
@@ -132,11 +144,7 @@ function Player({ song }) {
         setElapsed(_elapsed);
       }, 100);
     }
-  }, [
-    volume,
-    isPlaying,
-    song,
-  ]);
+  }, [isPlaying]);
 
   function formatTime(time) {
     if (time && !isNaN(time)) {
@@ -162,30 +170,22 @@ function Player({ song }) {
     audioPlayer.current.currentTime -= 10;
   };
   const toggleSkipForward = () => {
-    // if (index >= playlist.length - 1) {
-    //   setIndex(0);
-    //   audioPlayer.current.src = playlist[0];
-    //   audioPlayer.current.play();
-    // } else {
-    //   setIndex((prev) => prev + 1);
-    //   audioPlayer.current.src = playlist[index + 1];
-    // }
-    if (nextSong) {
-      audioPlayer.current.src = nextSong.songURL;
-      setTrack(nextSong);
-      audioPlayer.current.play();
-    } else if (playlist.length > 0) {
-      audioPlayer.current.src = playlist[0].songURL;
-      audioPlayer.current.play();
+    if (List.length - 1 > index) {
+      setIndex(index + 1);
+    } else if (index === null) {
+      setIndex(0);
+    } else if (List.length - 1 === index) {
+      setIndex(0);
     }
   };
   const toggleSkipBack = () => {
-    // if (index > 0) {
-    //   setIndex((prev) => prev - 1);
-    //   audioPlayer.current.src = playlist[index - 1];
-    //   audioPlayer.current.play();
-    // }
-
+    if (index > 0) {
+      setIndex(index - 1);
+    } else if (index === null) {
+      setIndex(0);
+    } else if (index === 0) {
+      setIndex(List.length - 1);
+    }
   };
 
   function VolmBtns() {
@@ -233,7 +233,7 @@ function Player({ song }) {
 
               <FastForwardIcon fontSize="small" sx={{ color: 'violet', '&:hover': { color: 'white' } }} onClick={toggleForward} />
 
-              <SkipNextIcon fontSize="small" sx={{ color: 'violet', '&:hover': { color: 'white' } }} onClick={toggleSkipForward} />
+              <SkipNextIcon fontSize="small" sx={{ color: 'violet', '&:hover': { color: 'white', cursor: 'pointer' } }} onClick={toggleSkipForward} />
             </Stack>
             <Stack
               direction="row"

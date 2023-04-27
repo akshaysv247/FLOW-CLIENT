@@ -345,3 +345,20 @@ export const getFollowers = async (id) => {
     return error.response.data.error;
   }
 };
+
+export const getChartDet = async (id) => {
+  try {
+    const response = await axios.get(`/artist/get-followers-for-chart/${id}`, {
+      withCredentials: true,
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('artistToken')}`,
+      },
+    });
+    const { data } = response;
+    if (data) {
+      return data;
+    }
+  } catch (error) {
+    return error.response.data.error;
+  }
+};

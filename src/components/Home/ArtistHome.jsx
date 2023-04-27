@@ -2,7 +2,6 @@ import React from 'react';
 import ArtistHeader from '../Header/ArtistHeader';
 import ArtistSidebar from '../Sidebar/ArtistSidebar';
 import ArtistDashbord from '../ArtistComponents/ArtistDashbord';
-// import Player from '../Player/Player';
 
 function ArtistHome() {
   return (

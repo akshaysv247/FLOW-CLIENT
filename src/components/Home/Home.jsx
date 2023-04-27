@@ -5,6 +5,7 @@
 /* eslint-disable no-underscore-dangle */
 import React, { useState, useEffect } from 'react';
 // import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Sidebar from '../Sidebar/Sidebar';
@@ -13,9 +14,11 @@ import SongCard from '../SongComponents/SongCard';
 import './Home.css';
 import { getAllTracks, getAllArtist } from '../../Api/userApis';
 import ArtistCard from '../Cards/ArtistCard';
+import { songActions } from '../../Redux/Slice/SongSlice';
 
 function Home() {
   // const { id } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
   const [toasting, setToasting] = useState('');
   const [songs, setSongs] = useState([]);
   const [artists, setArtists] = useState([]);
@@ -25,6 +28,9 @@ function Home() {
       const result = await getAllTracks();
       if (result.success) {
         setSongs(result.songs);
+        dispatch(songActions.setPlaylist({
+          list: result.songs,
+        }));
         console.log(song);
       }
     };

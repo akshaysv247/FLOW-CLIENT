@@ -33,8 +33,8 @@ function ArtistDashbord() {
     prevoke();
   }, []);
   return (
-    <div className="w-full h-[50vh]">
-      <div className="w-full h-fit bg-[#662eaf] flex flex-wrap gap-2 py-2 px-2 justify-center">
+    <div className="w-full h-[100vh]">
+      <div className="w-full h-fit  flex flex-wrap gap-2 py-2 px-2 justify-center">
         <div className="w-1/3 h-[15vh] bg-[#460a6b] flex justify-center rounded-md items-center">
           Total songs:
           {' '}
@@ -45,13 +45,16 @@ function ArtistDashbord() {
           {' '}
           {followers}
         </div>
-        <div className="w-1/3 h-[15vh] bg-[#6b2e0b] flex justify-center items-center rounded-md">
+        <div className="w-1/3 h-[15vh] bg-[#0b156b] flex justify-center items-center rounded-md">
           Total Hidden songs:
           {' '}
           {hidden}
         </div>
       </div>
-      <ArtistCharts />
+      <div>
+        <ArtistCharts />
+      </div>
+      <div>f</div>
     </div>
   );
 }

@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   song: null,
-  played: [null],
+  list: [null],
 };
 
 export const songSlice = createSlice({
@@ -17,7 +17,8 @@ export const songSlice = createSlice({
       state.song = null;
     },
     setPlaylist: (state, action) => {
-      state.played.push(action.payload.song);
+      console.log(action.payload, 'payload');
+      state.list = action.payload;
     },
   },
 });
