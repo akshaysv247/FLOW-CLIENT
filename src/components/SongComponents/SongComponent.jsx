@@ -17,7 +17,9 @@ import { LikeSong, checkLikedSong } from '../../Api/userApis';
 
 const ITEM_HEIGHT = 48;
 
-function SongComponent({ song, setSong }) {
+function SongComponent({
+  song, setAdd, setTrack, setReport,
+}) {
   // const navigate = useNavigate();
   const dispatch = useDispatch();
   const { id } = useSelector((state) => state.user);
@@ -52,27 +54,29 @@ function SongComponent({ song, setSong }) {
     invoke();
   }, []);
   const playsong = () => {
-    setSong(song);
+    // setSong(song);
+    console.log('ivde ethhi');
     dispatch(
       songActions.setSongDetails({
         song: song,
       }),
-      songActions.setPlaylist({
-        played: song,
-      }),
     );
   };
-  const handlePlaylist = () => {
-    // navigate('')
+  const handlePlaylist = async () => {
+    setAdd(true);
+    setTrack(song._id);
   };
-  const handleReport = () => {};
+  const handleReport = () => {
+    setReport(true);
+    setTrack(song._id);
+  };
 
   return (
     <div key={song._id} className="w-full h-16 border rounded-md flex justify-between">
       <div className="h-full w-1/2 flex items-center gap-2">
         <img src={song.imgURL} alt="Img" className="h-14 w-14 rounde-md" />
-        <div className="text-sm">
-          <p className="text-lg font-extrabold">{song.name}</p>
+        <div className="text-sm text-white">
+          <p className="text-lg font-extrabold text-white">{song.name}</p>
           <p>{song.artist}</p>
         </div>
       </div>

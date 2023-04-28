@@ -362,3 +362,37 @@ export const getChartDet = async (id) => {
     return error.response.data.error;
   }
 };
+
+export const hideSong = async (id) => {
+  try {
+    const response = await axios.put(`/artist/hide-song/${id}`, {}, {
+      withCredentials: true,
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('artistToken')}`,
+      },
+    });
+    const { data } = response;
+    if (data) {
+      return data;
+    }
+  } catch (error) {
+    return error.response.data.error;
+  }
+};
+
+export const deleteSong = async (id) => {
+  try {
+    const response = await axios.delete(`/artist/delete-song/${id}`, {
+      withCredentials: true,
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('artistToken')}`,
+      },
+    });
+    const { data } = response;
+    if (data) {
+      return data;
+    }
+  } catch (error) {
+    return error.response.data.error;
+  }
+};

@@ -13,6 +13,7 @@ import LibraryPage1 from '../pages/LibraryPage1';
 // import Feeds from '../pages/Feeds';
 import LikedSongs from '../pages/LikedSongs';
 import MyPlaylists from '../pages/MyPlaylists';
+import ArtistOverviewPage from '../pages/ArtistOverviewPage';
 
 // import PublicRoute from '../utils/PublicRoute';
 // import ProtectedRoute from '../utils/ProtectedRoute';
@@ -90,6 +91,14 @@ function UserRoutes() {
         element={(
           // <ProtectedRoute>
           <PlaylistOverviewPage />
+          // </ProtectedRoute>
+         )}
+      />
+      <Route
+        path="/view-artist"
+        element={(
+          // <ProtectedRoute>
+          <ArtistOverviewPage />
           // </ProtectedRoute>
          )}
       />

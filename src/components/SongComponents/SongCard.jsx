@@ -31,9 +31,6 @@ function SongCard({ song, setSong, setToasting }) {
       songActions.setSongDetails({
         song: song,
       }),
-      songActions.setPlaylist({
-        played: song,
-      }),
     );
   };
   useEffect(() => {

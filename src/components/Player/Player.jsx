@@ -31,7 +31,7 @@ import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 import VolumeMuteIcon from '@mui/icons-material/VolumeMute';
 import VolumeDownIcon from '@mui/icons-material/VolumeDown';
 // ----------------------------------------------------------------
-import { getCommonSongs } from '../../Api/userApis';
+// import { getCommonSongs } from '../../Api/userApis';
 // #-Styled Components----------------------------------------------------------------
 const Div = styled('div')(({ theme }) => ({
   backgroundColor: 'transparent',
@@ -92,8 +92,8 @@ function Player({ song }) {
   const [track, setTrack] = useState('');
   const audioPlayer = useRef();
   const [index, setIndex] = useState(null);
-  const [playlist, setPlaylist] = useState([]);
-  const [nextSong, setNextSong] = useState('');
+  // const [playlist, setPlaylist] = useState([]);
+  // const [nextSong, setNextSong] = useState('');
   const [isPlaying, setIsPlaying] = useState(false);
   const [volume, setVolume] = useState(50);
   const [mute, setMute] = useState(false);
@@ -103,17 +103,17 @@ function Player({ song }) {
   useEffect(() => {
     setTrack(song);
     console.log(track, 'track');
-    async function invoke() {
-      setPlaylist(null);
-      const list = await getCommonSongs(track.category, track._id);
-      console.log(list.songs, 'list');
-      if (list.songs.length > 1) {
-        setPlaylist(list.songs);
-      } else {
-        setNextSong(list.songs[0]);
-      }
-    }
-    invoke();
+    // async function invoke() {
+    //   setPlaylist(null);
+    //   const list = await getCommonSongs(track.category, track._id);
+    //   console.log(list.songs, 'list');
+    //   if (list.songs.length > 1) {
+    //     setPlaylist(list.songs);
+    //   } else {
+    //     setNextSong(list.songs[0]);
+    //   }
+    // }
+    // invoke();
   }, [song]);
 
   useEffect(() => {
