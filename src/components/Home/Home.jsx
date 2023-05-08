@@ -11,7 +11,6 @@ import 'react-toastify/dist/ReactToastify.css';
 import Sidebar from '../Sidebar/Sidebar';
 import Header from '../Header/Header';
 import SongCard from '../SongComponents/SongCard';
-import './Home.css';
 import { getAllTracks, getAllArtist } from '../../Api/userApis';
 import ArtistCard from '../Cards/ArtistCard';
 import { songActions } from '../../Redux/Slice/SongSlice';

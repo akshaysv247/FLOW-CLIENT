@@ -30,6 +30,7 @@ import VolumeOffIcon from '@mui/icons-material/VolumeOff';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 import VolumeMuteIcon from '@mui/icons-material/VolumeMute';
 import VolumeDownIcon from '@mui/icons-material/VolumeDown';
+import RepeatIcon from '@mui/icons-material/Repeat';
 // ----------------------------------------------------------------
 // import { getCommonSongs } from '../../Api/userApis';
 // #-Styled Components----------------------------------------------------------------
@@ -103,17 +104,6 @@ function Player({ song }) {
   useEffect(() => {
     setTrack(song);
     console.log(track, 'track');
-    // async function invoke() {
-    //   setPlaylist(null);
-    //   const list = await getCommonSongs(track.category, track._id);
-    //   console.log(list.songs, 'list');
-    //   if (list.songs.length > 1) {
-    //     setPlaylist(list.songs);
-    //   } else {
-    //     setNextSong(list.songs[0]);
-    //   }
-    // }
-    // invoke();
   }, [song]);
 
   useEffect(() => {
@@ -131,7 +121,6 @@ function Player({ song }) {
     }
   }, [
     volume,
-    // isPlaying,
     song,
   ]);
 
@@ -187,6 +176,9 @@ function Player({ song }) {
       setIndex(List.length - 1);
     }
   };
+  const handleRepeat = () => {
+    // if (audioPlayer.current?.duration)
+  };
 
   function VolmBtns() {
     return mute ? <VolumeOffIcon sx={{ color: 'violet', '&:hover': { color: 'pink' } }} onClick={() => setMute(!mute)} />
@@ -224,6 +216,7 @@ function Player({ song }) {
                 display: 'flex', justifyContent: 'flex-start', width: '40%', alignItems: 'center',
               }}
             >
+              <RepeatIcon fontSize="small" sx={{ color: 'violet', '&:hover': { color: 'white' } }} onClick={handleRepeat} />
               <SkipPreviousIcon fontSize="small" sx={{ color: 'violet', '&:hover': { color: 'white' } }} onClick={toggleSkipBack} />
 
               <FastRewindIcon fontSize="small" sx={{ color: 'violet', '&:hover': { color: 'white' } }} onClick={toggleBackward} />

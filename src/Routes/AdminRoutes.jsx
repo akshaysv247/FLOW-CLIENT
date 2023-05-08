@@ -10,8 +10,8 @@ import AdminCategoryPage from '../pages/AdminPages/AdminCategoryPage';
 import AddCategoryPage from '../pages/AdminPages/AddCategoryPage';
 import EditCategory from '../components/AdminPagecomponents/AdminComps/EditCategory';
 
-// import AdminPublicRoute from './utils/AdminPublicRoute';
-// import AdminPrivateRoute from './utils/AdminPrivateRoute';
+import { AdminProtectedRoute } from '../utils/ProtectedRoute';
+import AdminCopyrights from '../pages/AdminPages/AdminCopyrights';
 
 function AdminRoutes() {
   return (
@@ -19,75 +19,65 @@ function AdminRoutes() {
       <Route
         path="/login"
         element={
-          // <AdminPublicRoute>
           <AdminLoginPage />
-          // </AdminPublicRoute>
         }
       />
-      <Route
-        path="/home"
-        element={
-          // <AdminPrivateRoute>
-          <AdminHomePage />
-          // </AdminPrivateRoute>
+      <Route element={(<AdminProtectedRoute />)}>
+        <Route
+          path="/home"
+          element={
+            <AdminHomePage />
         }
-      />
-      <Route
-        path="/users"
-        element={
-          // <AdminPrivateRoute>
-          <AdminUserDetPage />
-          // </AdminPrivateRoute>
+        />
+        <Route
+          path="/users"
+          element={
+            <AdminUserDetPage />
         }
-      />
-      <Route
-        path="/artists"
-        element={
-          // <AdminPrivateRoute>
-          <AdminArtistDetPage />
-          // </AdminPrivateRoute>
+        />
+        <Route
+          path="/artists"
+          element={
+            <AdminArtistDetPage />
         }
-      />
-      <Route
-        path="/tracks"
-        element={
-          // <AdminPrivateRoute>
-          <AdminSongs />
-          // </AdminPrivateRoute>
+        />
+        <Route
+          path="/tracks"
+          element={
+            <AdminSongs />
         }
-      />
-      <Route
-        path="/addTrack"
-        element={
-          // <AdminPrivateRoute>
-          <AdminAddTrack />
-          // </AdminPrivateRoute>
+        />
+        <Route
+          path="/addTrack"
+          element={
+            <AdminAddTrack />
         }
-      />
-      <Route
-        path="/categories"
-        element={
-          // <AdminPrivateRoute>
-          <AdminCategoryPage />
-          // </AdminPrivateRoute>
+        />
+        <Route
+          path="/categories"
+          element={
+            <AdminCategoryPage />
         }
-      />
-      <Route
-        path="/add-category"
-        element={
-          // <AdminPrivateRoute>
-          <AddCategoryPage />
-          // </AdminPrivateRoute>
+        />
+        <Route
+          path="/add-category"
+          element={
+            <AddCategoryPage />
         }
-      />
-      <Route
-        path="/edit-category"
-        element={
-          // <AdminPrivateRoute>
-          <EditCategory />
-          // </AdminPrivateRoute>
+        />
+        <Route
+          path="/edit-category"
+          element={
+            <EditCategory />
         }
-      />
+        />
+        <Route
+          path="/copyrights"
+          element={
+            <AdminCopyrights />
+        }
+        />
+      </Route>
     </Routes>
   );
 }

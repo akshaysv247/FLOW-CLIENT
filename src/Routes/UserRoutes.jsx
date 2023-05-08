@@ -15,116 +15,64 @@ import LikedSongs from '../pages/LikedSongs';
 import MyPlaylists from '../pages/MyPlaylists';
 import ArtistOverviewPage from '../pages/ArtistOverviewPage';
 
-// import PublicRoute from '../utils/PublicRoute';
-// import ProtectedRoute from '../utils/ProtectedRoute';
+import { UserProtectedRoute } from '../utils/ProtectedRoute';
 
 function UserRoutes() {
   return (
     <Routes>
       <Route
         path="/"
-        element={(
-          // <PublicRoute>
-          <LoginPage />
-          // </PublicRoute>
-      )}
+        element={(<LoginPage />)}
       />
       <Route
         path="/ForgetPassword"
-        element={(
-          // <PublicRoute>
-          <ResetPassword />
-          // </PublicRoute>
-        )}
+        element={(<ResetPassword />)}
       />
       <Route
         path="/signOps"
-        element={(
-          // <PublicRoute>
-          <SignOpsPage />
-          // </PublicRoute>
-        )}
+        element={(<SignOpsPage />)}
       />
       <Route
         path="/signup"
-        element={(
-          // <PublicRoute>
-          <SignupPage />
-          /* </PublicRoute> */
-        )}
+        element={(<SignupPage />)}
       />
-      <Route
-        path="/home"
-        element={(
-          // <ProtectedRoute>
-          <HomePage />
-
-        )}
-      />
-      <Route
-        path="/profile"
-        element={(
-          // <ProtectedRoute>
-          <ProfilePage />
-          // </ProtectedRoute>
-         )}
-      />
-      <Route
-        path="/create-playlist"
-        element={(
-          // <ProtectedRoute>
-          // <CreatePlaylistPage />
-          <MyPlaylists />
-          // </ProtectedRoute>
-         )}
-      />
-      <Route
-        path="/new-playlist"
-        element={(
-          // <ProtectedRoute>
-          <CreatePlaylistPage />
-          // </ProtectedRoute>
-         )}
-      />
-      <Route
-        path="/playlists"
-        element={(
-          // <ProtectedRoute>
-          <PlaylistOverviewPage />
-          // </ProtectedRoute>
-         )}
-      />
-      <Route
-        path="/view-artist"
-        element={(
-          // <ProtectedRoute>
-          <ArtistOverviewPage />
-          // </ProtectedRoute>
-         )}
-      />
-      <Route
-        path="/liked-songs"
-        element={(
-          // <ProtectedRoute>
-          <LikedSongs />
-          // </ProtectedRoute>
-         )}
-      />
-      <Route
-        path="/library"
-        element={(
-          // <ProtectedRoute>
-          <LibraryPage1 />
-          // </ProtectedRoute>
-         )}
-      />
+      <Route element={(<UserProtectedRoute />)}>
+        <Route
+          path="/home"
+          element={(<HomePage />)}
+        />
+        <Route
+          path="/profile"
+          element={(<ProfilePage />)}
+        />
+        <Route
+          path="/create-playlist"
+          element={(<MyPlaylists />)}
+        />
+        <Route
+          path="/new-playlist"
+          element={(<CreatePlaylistPage />)}
+        />
+        <Route
+          path="/playlists"
+          element={(<PlaylistOverviewPage />)}
+        />
+        <Route
+          path="/view-artist"
+          element={(<ArtistOverviewPage />)}
+        />
+        <Route
+          path="/liked-songs"
+          element={(<LikedSongs />)}
+        />
+        <Route
+          path="/library"
+          element={(<LibraryPage1 />)}
+        />
+      </Route>
       {/* <Route
         path="/feeds"
-        element={(
-          // <ProtectedRoute>
-          <Feeds />
-          // </ProtectedRoute>
-         )}
+        element={(<Feeds />)}
       /> */}
     </Routes>
   );

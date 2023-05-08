@@ -23,7 +23,6 @@ function ArtistDashbord() {
     };
     const func = async () => {
       const result = await getFollowers(id);
-      console.log(result, 'foll');
       if (result.success) {
         setFollowers(result.followers.length);
       }

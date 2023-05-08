@@ -1,16 +1,18 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import AddTrack from '../components/ArtistComponents/AddTrack';
-import CreatePlaylist from '../components/ArtistComponents/CreatePlaylist';
 import Track from '../components/ArtistComponents/Track';
 import ArtistHomePage from '../pages/ArtistPages/ArtistHomePage';
 import ArtistLoginPage from '../pages/ArtistPages/ArtistLoginPage';
 import ArtistProfilePage from '../pages/ArtistPages/ArtistProfilePage';
 import ArtistSignupPage from '../pages/ArtistPages/ArtistSignupPage';
-
-import ArtistPublicRoute from '../utils/ArtistPublicRoute';
-import ArtistPrivateRoute from '../utils/ArtistPrivateRoute';
 import ArtistLibraryPage from '../pages/ArtistPages/ArtistLibraryPage';
+
+import { ArtistProtectedRoute } from '../utils/ProtectedRoute';
+import ArtistPlaylist from '../pages/ArtistPages/ArtistPlaylist';
+import ArtistCreateList from '../pages/ArtistPages/ArtistCreateList';
+import ArtistListOverview from '../pages/ArtistPages/ArtistListOverview';
+import ArtistLikedSongs from '../pages/ArtistPages/ArtistLikedSongs';
 
 function ArtistRoutes() {
   return (
@@ -18,75 +20,71 @@ function ArtistRoutes() {
       <Route
         path="/login"
         element={(
-          <ArtistPublicRoute>
-            <ArtistLoginPage />
-          </ArtistPublicRoute>
+          <ArtistLoginPage />
         )}
       />
       <Route
         path="/signup"
         element={(
-          <ArtistPublicRoute>
-            <ArtistSignupPage />
-          </ArtistPublicRoute>
+          <ArtistSignupPage />
         )}
       />
-      <Route
-        path="/home"
-        element={(
-          <ArtistPrivateRoute>
+      <Route elememt={(<ArtistProtectedRoute />)}>
+        <Route
+          path="/home"
+          element={(
             <ArtistHomePage />
-          </ArtistPrivateRoute>
         )}
-      />
-      <Route
-        path="/profile"
-        element={(
-          <ArtistPrivateRoute>
+        />
+        <Route
+          path="/profile"
+          element={(
             <ArtistProfilePage />
-          </ArtistPrivateRoute>
         )}
-      />
-      <Route
-        path="/library"
-        element={(
-          <ArtistPrivateRoute>
+        />
+        <Route
+          path="/liked-songs"
+          element={(
+            <ArtistLikedSongs />
+        )}
+        />
+        <Route
+          path="/library"
+          element={(
             <ArtistLibraryPage />
-          </ArtistPrivateRoute>
         )}
-      />
-      <Route
-        path="/track"
-        element={(
-          <ArtistPrivateRoute>
+        />
+        <Route
+          path="/track"
+          element={(
             <Track />
-          </ArtistPrivateRoute>
         )}
-      />
-      <Route
-        path="/AddTrack"
-        element={(
-          <ArtistPrivateRoute>
+        />
+        <Route
+          path="/AddTrack"
+          element={(
             <AddTrack />
-          </ArtistPrivateRoute>
         )}
-      />
-      <Route
-        path="/create-playlist"
-        element={(
-          <ArtistPrivateRoute>
-            <CreatePlaylist />
-          </ArtistPrivateRoute>
+        />
+        <Route
+          path="/create-playlist"
+          element={(
+            <ArtistPlaylist />
         )}
-      />
-      {/* <Route
-        path="/copyrights"
-        element={
-          // <ArtistPrivateRoute>
-          <ArtistHomePage />
-          // </ArtistPrivateRoute>
-        }
-      /> */}
+        />
+        <Route
+          path="/new-playlist"
+          element={(
+            <ArtistCreateList />
+        )}
+        />
+        <Route
+          path="/playlists"
+          element={(
+            <ArtistListOverview />
+        )}
+        />
+      </Route>
     </Routes>
   );
 }

@@ -396,3 +396,20 @@ export const deleteSong = async (id) => {
     return error.response.data.error;
   }
 };
+
+export const deletePlaylist = async (id) => {
+  try {
+    const response = await axios.delete(`/artist/delete-playlist/${id}`, {
+      withCredentials: true,
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('artistToken')}`,
+      },
+    });
+    const { data } = response;
+    if (data) {
+      return data;
+    }
+  } catch (error) {
+    return error.response.data.error;
+  }
+};

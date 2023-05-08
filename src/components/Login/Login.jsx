@@ -145,7 +145,6 @@ function Login() {
                 </p>
               </Link>
             </div>
-            <Link to="/admin/login">login as Admin</Link>
             <div className="w-full flex flex-col my-4">
               <button
                 className="w-full text-[20px] font-semibold text-white bg-[#e60c7d9e] hover:shadow-lg shadow-[#070706ee] rounded-md p-2 text-center flex items-center justify-center border-2 border-teal-500 hover:bg-teal-600 hover:border-[#e60c7d9e]"
@@ -163,6 +162,7 @@ function Login() {
                 </button>
               </Link>
             </div>
+            <Link to="/admin/login">login as Admin</Link>
           </form>
           <div className="flex items-center justify-center">
             <Link to="/artist/login">

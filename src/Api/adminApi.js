@@ -246,3 +246,53 @@ export const deleteCategory = async (id) => {
     return error.response.data.error;
   }
 };
+
+export const getCopyrights = async () => {
+  try {
+    const response = await axios.get('/admin/get-copyrights', {
+      withCredentials: true,
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('adminToken')}`,
+      },
+    });
+    const { data } = response.data;
+    if (data) {
+      return data;
+    }
+  } catch (error) {
+    return error.response.data.error;
+  }
+};
+
+export const getChartDets = async () => {
+  try {
+    const response = await axios.get('/admin/get-chart-dets', {
+      withCredentials: true,
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('adminToken')}`,
+      },
+    });
+    const { data } = response.data;
+    if (data) {
+      return data;
+    }
+  } catch (error) {
+    return error.response.data.error;
+  }
+};
+export const getAllHiddenSongs = async () => {
+  try {
+    const response = await axios.get('/admin/get-all-hidden-songs', {
+      withCredentials: true,
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('adminToken')}`,
+      },
+    });
+    const { data } = response.data;
+    if (data) {
+      return data;
+    }
+  } catch (error) {
+    return error.response.data.error;
+  }
+};
