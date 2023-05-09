@@ -20,7 +20,7 @@ function LikedSongs() {
   const [list, setList] = useState([]);
   const [track, setTrack] = useState('');
   const [report, setReport] = useState(false);
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState(null);
   useEffect(() => {
     const invoke = async () => {
       const response = await getLikedSongs(id);

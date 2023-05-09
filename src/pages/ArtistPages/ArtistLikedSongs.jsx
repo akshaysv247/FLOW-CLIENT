@@ -9,13 +9,12 @@ import 'react-toastify/dist/ReactToastify.css';
 import ArtistHeader from '../../components/Header/ArtistHeader';
 import ArtistSidebar from '../../components/Sidebar/ArtistSidebar';
 import { getLikedSongs, getMyPlaylists } from '../../Api/artistApi';
-import SongComponent from '../../components/SongComponents/SongComponent';
 import AddtoPlaylist from '../../components/Playlist/AddtoPlaylist';
+import ArtistSong from '../../components/SongComponents/ArtistSong';
 import Report from '../../components/HelperComponents/Report';
 
 function ArtistLikedSongs() {
   const { id } = useSelector((state) => state.artist);
-
   const [songs, setSongs] = useState([]);
   const [add, setAdd] = useState(false);
   const [list, setList] = useState([]);
@@ -24,9 +23,9 @@ function ArtistLikedSongs() {
   const [message, setMessage] = useState('');
   useEffect(() => {
     const invoke = async () => {
-      const response = await getLikedSongs(id);
-      if (response.success) {
-        setSongs(response.songs);
+      const result = await getLikedSongs(id);
+      if (result.success) {
+        setSongs(result.songs);
       }
     };
     invoke();
@@ -35,7 +34,6 @@ function ArtistLikedSongs() {
     const invoke = async () => {
       const result = await getMyPlaylists(id);
       if (result.success) {
-        console.log(result, 'succcc');
         setList(result.myPlaylists);
       }
     };
@@ -50,7 +48,7 @@ function ArtistLikedSongs() {
       <div>
         <ArtistHeader />
       </div>
-      <ToastContainer />
+      {message && <ToastContainer />}
       <div className="flex gap-2">
         <div><ArtistSidebar /></div>
         <div className="p-3 flex flex-col gap-1">
@@ -63,9 +61,10 @@ function ArtistLikedSongs() {
             </h1>
           </div>
           <div className="w-full h-550 rounded-md p-3 flex flex-col gap-2 overflow-auto">
-            {songs.map((song) => (
-              <SongComponent
-                song={song}
+            {songs.map((mel) => (
+              <ArtistSong
+                song={mel}
+                key={mel._id}
                 setAdd={setAdd}
                 setTrack={setTrack}
                 setReport={setReport}

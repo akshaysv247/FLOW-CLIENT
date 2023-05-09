@@ -34,7 +34,7 @@ function Track() {
 
   return (
     <div className="w-[100%] h-[100vh] bg-[#050514] flex flex-col text-white">
-      <ToastContainer />
+      {message && <ToastContainer />}
       <div className="w-full h-20">
         <ArtistHeader />
       </div>

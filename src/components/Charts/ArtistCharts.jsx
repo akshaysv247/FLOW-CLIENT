@@ -17,8 +17,8 @@ function ArtistCharts() {
     invoke();
   }, []);
   return (
-    <div className="w-[95vw] h-[50vh] flex justify-center items-center">
-      <LineChart width={900} height={400} data={data}>
+    <div className="w-[50vw] h-[50vh] flex justify-center items-center mt-14">
+      <LineChart width={900} height={500} data={data}>
         <XAxis dataKey="name" />
         <YAxis />
         <CartesianGrid stroke="#eee" strokeDasharray="5 5" />

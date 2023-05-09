@@ -55,9 +55,9 @@ function Home() {
         <div className="h-full">
           <Sidebar />
         </div>
-        <div className=" w-full h-full p-2">
+        <div className=" w-full h-fit p-2 overflow-auto">
           <p className="text-2xl font-extrabold">SONGS</p>
-          <div className="flex flex-wrap gap-2 p-3">
+          <div className="flex flex-wrap h-250 gap-2 p-3 overflow-auto">
             {songs.map((track) => (
               <SongCard song={track} setSong={setSong} key={track._id} setToasting={setToasting} />
             ))}

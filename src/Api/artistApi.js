@@ -56,6 +56,41 @@ export const updateProfile = async (id, name, email, uploadedUrl) => {
   }
 };
 
+export const LikeSong = async (trackId, artistId) => {
+  try {
+    const response = await axios.put(`/artist/like-song/${artistId}/${trackId}`, {}, {
+      withCredentials: true,
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('artistToken')}`,
+      },
+    });
+    const { data } = response;
+    console.log(data);
+    if (data) {
+      return data;
+    }
+  } catch (error) {
+    return error.response.data.error;
+  }
+};
+
+export const getAllSongs = async () => {
+  try {
+    const response = await axios.get('/artist/get-all-songs', {
+      withCredentials: true,
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('artistToken')}`,
+      },
+    });
+    const { data } = response;
+    if (data) {
+      return data;
+    }
+  } catch (error) {
+    return error.response.data.error;
+  }
+};
+
 export const getAllTracks = async (id) => {
   try {
     const response = await axios.get(`/artist/get-all-tracks/${id}`, {
@@ -400,6 +435,23 @@ export const deleteSong = async (id) => {
 export const deletePlaylist = async (id) => {
   try {
     const response = await axios.delete(`/artist/delete-playlist/${id}`, {
+      withCredentials: true,
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('artistToken')}`,
+      },
+    });
+    const { data } = response;
+    if (data) {
+      return data;
+    }
+  } catch (error) {
+    return error.response.data.error;
+  }
+};
+
+export const search = async (track, role) => {
+  try {
+    const response = await axios.post('/artist/search', { track, role }, {
       withCredentials: true,
       headers: {
         Authorization: `Bearer ${localStorage.getItem('artistToken')}`,

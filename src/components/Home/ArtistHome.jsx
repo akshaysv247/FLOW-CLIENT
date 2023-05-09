@@ -5,7 +5,7 @@ import ArtistDashbord from '../ArtistComponents/ArtistDashbord';
 
 function ArtistHome() {
   return (
-    <div className="w-[100%] h-[100vh] bg-[#050514] flex flex-col text-white gap-1">
+    <div className="w-[100%] h-[100vh] bg-[#050514] flex flex-col text-white gap-1 overflow-hidden">
       <div className="w-full h-20">
         <ArtistHeader />
       </div>

@@ -97,9 +97,6 @@ function Header() {
   const handleSubmit = (e) => {
     e.preventDefault();
     handleSearch();
-    // if (e.key === 'Enter') {
-    //   handleSearch(e);
-    // }
   };
   const handleChange = (e) => {
     setSearching(e.target.value);

@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useEffect, useState } from 'react';
-import PlayCircleFilledIcon from '@mui/icons-material/PlayCircleFilled';
+// import PlayCircleFilledIcon from '@mui/icons-material/PlayCircleFilled';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
@@ -35,7 +35,7 @@ function LikedSongs() {
           {' '}
           songs
         </h1>
-        <PlayCircleFilledIcon sx={{ color: '#b700ff', fontSize: '40px' }} />
+        {/* <PlayCircleFilledIcon sx={{ color: '#b700ff', fontSize: '40px' }} /> */}
       </div>
     </div>
   );

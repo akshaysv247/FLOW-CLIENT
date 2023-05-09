@@ -13,6 +13,8 @@ import {
 } from '@mui/material';
 import { artistAcions } from '../../Redux/Slice/ArtistSlice';
 import Logo from '../Logo/Logo';
+import SearchResult from '../SearchComponent/SearchResult';
+import { search } from '../../Api/artistApi';
 
 // eslint-disable-next-line no-unused-vars
 const ArtistBox = styled(Box)(({ theme }) => ({
@@ -66,21 +68,48 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 function ArtistHeader() {
   const { name, ImgURL } = useSelector((state) => state.artist);
-  const [search, setSearch] = useState('');
+  const [searching, setSearching] = useState('');
+  const [result, setResult] = useState([]);
+  const [arts, setArts] = useState([]);
+  const [plays, setPlays] = useState([]);
   const [item, setItem] = useState('Tracks');
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const handleSearch = () => { console.log('fasd'); };
-  const handleSubmit = (e) => {
-    // e.preventDefault();
-    if (e.key === 'Enter') {
-      handleSearch(e);
+
+  const handleSearch = async () => {
+    const response = await search(searching, item);
+    console.log(response, 'resoooo');
+    if (response.success) {
+      if (response.tracks) {
+        setArts([]);
+        setPlays([]);
+        setResult(response.tracks);
+      }
+      if (response.artists) {
+        setResult([]);
+        setPlays([]);
+        setArts(response.artists);
+      }
+      if (response.playlists) {
+        setResult([]);
+        setArts([]);
+        setPlays(response.playlists);
+      }
+      console.log(result, 'resss');
     }
   };
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    handleSearch();
+  };
+  const handleChange = (e) => {
+    setSearching(e.target.value);
+  };
+
   const handleLogout = () => {
     dispatch(artistAcions.setArtistLogout());
-    navigate('/');
+    navigate('/artist/login');
   };
   const handleProfile = () => {
     navigate('/artist/profile');
@@ -100,7 +129,7 @@ function ArtistHeader() {
         </div>
         <div className="">
           <div className="bg-[#0301035c] sm:w-fit px-2 h-12 flex items-center justify-center rounded-lg">
-            <form onSubmit={handleSearch} className="flex items-center">
+            <form onSubmit={handleSubmit} className="flex items-center">
               <Search>
                 <SearchIconWrapper>
                   <SearchIcon />
@@ -108,16 +137,18 @@ function ArtistHeader() {
                 <StyledInputBase
                   placeholder="Search…"
                   inputProps={{ 'aria-label': 'search' }}
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
-                  onKeyDown={handleSubmit}
+                  value={searching}
+                  onChange={handleChange}
+                  // onKeyDown={handleSubmit}
                 />
               </Search>
               <select value={item} className="bg-[#240d42c4] h-[2.3rem] rounded-md text-sm text-gray-500" onChange={(e) => setItem(e.target.value)}>
                 <option>Tracks</option>
-                <option>Playlist</option>
+                {/* <option>Playlist</option> */}
+                <option>Artist</option>
               </select>
             </form>
+            {searching && <SearchResult result={result} arts={arts} plays={plays} />}
           </div>
         </div>
         <div>

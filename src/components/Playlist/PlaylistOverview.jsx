@@ -10,7 +10,7 @@ function PlaylistOverview({ list }) {
   const [deleted, setDeleted] = useState(true);
   const [track, setTrack] = useState('');
   const [report, setReport] = useState(false);
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState(null);
   useEffect(() => { toast(message); }, [message]);
   return (
     <div className="flex flex-col w-full h-[95vh] bg-[#17175428] px-5 py-2 rounded-md gap-2">
