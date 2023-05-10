@@ -11,7 +11,7 @@ import Track from './AdminComps/Track';
 function songs() {
   // eslint-disable-next-line no-shadow
   const [songs, setSongs] = useState([]);
-  const [change, setChange] = useState('');
+  const [change, setChange] = useState(null);
   useEffect(() => {
     const getAllSongs = async () => {
       const response = await getAllTracks();

@@ -40,12 +40,13 @@ export const addNewTrack = async (datas, img, audio, selectedCat, language) => {
 
 export const verifyArtist = async (id) => {
   try {
-    const response = await axios.put(`/admin/artist-verify/${id}`, {
+    const response = await axios.put(`/admin/artist-verify/${id}`, {}, {
       withCredentials: true,
       headers: {
         Authorization: `Bearer ${localStorage.getItem('adminToken')}`,
       },
     });
+    console.log(response, 'response');
     const { data } = response;
     if (data) {
       return data;
@@ -57,7 +58,7 @@ export const verifyArtist = async (id) => {
 
 export const artistBlock = async (id) => {
   try {
-    const response = await axios.get(`/admin/artist-block/${id}`, {
+    const response = await axios.put(`/admin/artist-block/${id}`, {}, {
       withCredentials: true,
       headers: {
         Authorization: `Bearer ${localStorage.getItem('adminToken')}`,
@@ -92,7 +93,7 @@ export const artistDeatais = async () => {
 
 export const userBlock = async (id) => {
   try {
-    const response = await axios.put(`/admin/user-block/${id}`, {
+    const response = await axios.put(`/admin/user-block/${id}`, {}, {
       withCredentials: true,
       headers: {
         Authorization: `Bearer ${localStorage.getItem('adminToken')}`,
@@ -255,9 +256,9 @@ export const getCopyrights = async () => {
         Authorization: `Bearer ${localStorage.getItem('adminToken')}`,
       },
     });
-    const { data } = response.data;
-    if (data) {
-      return data;
+    console.log(response, 'resp');
+    if (response) {
+      return response;
     }
   } catch (error) {
     return error.response.data.error;
