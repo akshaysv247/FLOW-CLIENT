@@ -23,7 +23,7 @@ function PlaylistOverviewPage() {
 
   console.log(list, 'lists');
   return (
-    <div className="w-screen h-full bg-gradient-to-b from-[#01011d] to-[black] flex flex-col">
+    <div className="w-screen h-full bg-gradient-to-b from-[#01011d] to-[black] flex flex-col overflow-hidden">
       <div>
         <Header />
       </div>

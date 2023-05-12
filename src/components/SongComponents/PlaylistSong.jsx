@@ -16,11 +16,12 @@ import { LikeSong, checkLikedSong, removeFromPlaylist } from '../../Api/userApis
 const ITEM_HEIGHT = 48;
 
 function PlaylistSong({
-  song, listId, setDelelted, setTrack, setReport,
+  song, listId, setTrack, setReport,
 }) {
   const dispatch = useDispatch();
   const { id } = useSelector((state) => state.user);
   const [liked, setLiked] = useState(true);
+  const [deleted, setDeleted] = useState(true);
   const [playing, setPlaying] = useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -49,7 +50,7 @@ function PlaylistSong({
       }
     };
     invoke();
-  }, []);
+  }, [deleted]);
   const playsong = () => {
     // setSong(song);
     dispatch(
@@ -62,58 +63,60 @@ function PlaylistSong({
     const result = await removeFromPlaylist(listId, song._id);
     if (result.success) {
       console.log(result);
-      setDelelted(false);
+      setDeleted(false);
     }
   };
   const handleReport = () => {
     setReport(true);
     setTrack(song._id);
   };
-  return (
-    <div key={song._id} className="w-full h-16 border rounded-md flex justify-between">
-      <div className="h-full w-1/2 flex items-center gap-2">
-        <img src={song.imgURL} alt="Img" className="h-14 w-14 rounde-md" />
-        <div className="text-white">
-          <p className="text-lg font-extrabold">{song.name}</p>
-          <p>{song.artist}</p>
+  if (deleted) {
+    return (
+      <div key={song._id} className="w-full h-16 border rounded-md flex justify-between">
+        <div className="h-full w-1/2 flex items-center gap-2">
+          <img src={song.imgURL} alt="Img" className="h-14 w-14 rounde-md" />
+          <div className="text-white">
+            <p className="text-lg font-extrabold">{song.name}</p>
+            <p>{song.artist}</p>
+          </div>
+        </div>
+        <div className="flex items-center h-full gap-2 mr-5">
+          {liked ? <FavoriteIcon sx={{ color: 'red', fontSize: '30px' }} onClick={likeSong} /> : <FavoriteBorderIcon sx={{ fontSize: '30px' }} onClick={likeSong} /> }
+          {playing ? <PauseCircleIcon sx={{ color: '#7d1aa1', fontSize: '40px' }} onClick={() => setPlaying(!playing)} /> : <PlayCircleFilledWhiteIcon sx={{ color: '#7d1aa1', fontSize: '40px' }} onClick={playsong} />}
+          <IconButton
+            aria-label="more"
+            id="long-button"
+            aria-controls={open ? 'long-menu' : undefined}
+            aria-expanded={open ? 'true' : undefined}
+            aria-haspopup="true"
+            onClick={handleClick}
+          >
+            <MoreVertIcon sx={{ color: 'white' }} />
+          </IconButton>
+          <Menu
+            id="long-menu"
+            MenuListProps={{
+              'aria-labelledby': 'long-button',
+            }}
+            anchorEl={anchorEl}
+            open={open}
+            onClose={handleClose}
+            PaperProps={{
+              style: {
+                maxHeight: ITEM_HEIGHT * 4.5,
+                width: '20ch',
+              },
+            }}
+          >
+            <MenuItem onClick={handlePlaylist}>
+              Remove from Playlist
+            </MenuItem>
+            <MenuItem onClick={handleReport}>Report</MenuItem>
+          </Menu>
         </div>
       </div>
-      <div className="flex items-center h-full gap-2 mr-5">
-        {liked ? <FavoriteIcon sx={{ color: 'red', fontSize: '30px' }} onClick={likeSong} /> : <FavoriteBorderIcon sx={{ fontSize: '30px' }} onClick={likeSong} /> }
-        {playing ? <PauseCircleIcon sx={{ color: '#7d1aa1', fontSize: '40px' }} onClick={() => setPlaying(!playing)} /> : <PlayCircleFilledWhiteIcon sx={{ color: '#7d1aa1', fontSize: '40px' }} onClick={playsong} />}
-        <IconButton
-          aria-label="more"
-          id="long-button"
-          aria-controls={open ? 'long-menu' : undefined}
-          aria-expanded={open ? 'true' : undefined}
-          aria-haspopup="true"
-          onClick={handleClick}
-        >
-          <MoreVertIcon sx={{ color: 'white' }} />
-        </IconButton>
-        <Menu
-          id="long-menu"
-          MenuListProps={{
-            'aria-labelledby': 'long-button',
-          }}
-          anchorEl={anchorEl}
-          open={open}
-          onClose={handleClose}
-          PaperProps={{
-            style: {
-              maxHeight: ITEM_HEIGHT * 4.5,
-              width: '20ch',
-            },
-          }}
-        >
-          <MenuItem onClick={handlePlaylist}>
-            Remove from Playlist
-          </MenuItem>
-          <MenuItem onClick={handleReport}>Report</MenuItem>
-        </Menu>
-      </div>
-    </div>
-  );
+    );
+  }
 }
 
 export default PlaylistSong;

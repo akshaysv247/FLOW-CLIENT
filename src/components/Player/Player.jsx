@@ -133,7 +133,7 @@ function Player({ song }) {
         setElapsed(_elapsed);
       }, 100);
     }
-  }, [isPlaying]);
+  }, [isPlaying, song]);
 
   function formatTime(time) {
     if (time && !isNaN(time)) {

@@ -61,10 +61,11 @@ function Signup() {
     try {
       if (details && verified) {
         const result = await userSignup(obj);
+        console.log(result, 'ress');
         if (result.success) {
-          setResError.success(result.message);
           toast.success(result.message);
           Navigate('/');
+          setResError.success(result.message);
         } else {
           setResError(result.message);
           toast.error(result.message);
@@ -112,7 +113,6 @@ function Signup() {
     }
   };
   const resendOTP = () => {
-    console.log('gd');
     setUpRecaptcha(phone);
   };
 
@@ -122,7 +122,7 @@ function Signup() {
   };
 
   return (
-    <div className="w-screen h-[900px] grid grid-cols-2 bg-hero2 bg-cover bg-center">
+    <div className="w-screen h-[100vh] grid grid-cols-2 bg-hero2 bg-cover bg-center">
       <div className="justify-center w-1/screen h-screen items-center hidden sm:flex">
         <Logo />
       </div>
