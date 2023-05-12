@@ -50,7 +50,7 @@ function PlaylistSong({
       }
     };
     invoke();
-  }, [deleted]);
+  }, []);
   const playsong = () => {
     // setSong(song);
     dispatch(
