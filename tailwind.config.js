@@ -6,11 +6,11 @@ module.exports = {
   theme: {
     extend: {
       backgroundImage: {
-        hero: "URL('./public/backgrounds/signops.jpg')",
-        hero1: "URL('./public/backgrounds/mainBg.jpg')",
-        hero2: "URL('./public/backgrounds/guitar4.jpg')",
-        hero3: "URL('./public/backgrounds/option cover.jpg')",
-        hero4: "URL('./public/backgrounds/artistsignup.jpg')",
+        hero: "URL('/backgrounds/signops.jpg')",
+        hero1: "URL('/backgrounds/mainBg.jpg')",
+        hero2: "URL('/backgrounds/guitar4.jpg')",
+        hero3: "URL('/backgrounds/option cover.jpg')",
+        hero4: "URL('/backgrounds/artistsignup.jpg')",
       },
       width: {
         150: '150px',
