@@ -122,7 +122,7 @@ function Signup() {
   };
 
   return (
-    <div className="w-screen h-[100vh] grid grid-cols-2 bg-hero2 bg-cover bg-center">
+    <div className="w-screen h-[screen] grid grid-cols-2 bg-hero2 bg-cover bg-center">
       <div className="justify-center w-1/screen h-screen items-center hidden sm:flex">
         <Logo />
       </div>
