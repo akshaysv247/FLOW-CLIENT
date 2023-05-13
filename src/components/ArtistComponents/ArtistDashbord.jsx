@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -14,7 +15,6 @@ function ArtistDashbord() {
   const [hidden, setHidden] = useState(0);
   const [followers, setFollowers] = useState(0);
   const [songs, setSongs] = useState([]);
-  const [setSong] = useState('');
   useEffect(() => {
     const invoke = async () => {
       const result = await getAllTracks(id);
@@ -77,7 +77,7 @@ function ArtistDashbord() {
             {songs.map((track) => (
               <ArtistSongCard
                 song={track}
-                setSong={setSong}
+                key={track._id}
               />
             ))}
           </div>

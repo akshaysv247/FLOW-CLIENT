@@ -93,17 +93,19 @@ function Player({ song }) {
   const [track, setTrack] = useState('');
   const audioPlayer = useRef();
   const [index, setIndex] = useState(null);
-  // const [playlist, setPlaylist] = useState([]);
-  // const [nextSong, setNextSong] = useState('');
+  const [repeat, setRepeat] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [volume, setVolume] = useState(50);
   const [mute, setMute] = useState(false);
   const [elapsed, setElapsed] = useState(0);
   const [duration, setDuration] = useState(0);
+  const [rSong, setRsong] = useState(null);
 
   useEffect(() => {
     setTrack(song);
-    console.log(track, 'track');
+    if (repeat) {
+      setRsong(song);
+    }
   }, [song]);
 
   useEffect(() => {
@@ -176,8 +178,23 @@ function Player({ song }) {
       setIndex(List.length - 1);
     }
   };
+  useEffect(() => {
+    if (duration - elapsed === 0 && rSong) {
+      setTrack(null);
+    } else if (duration - elapsed === 0) {
+      toggleSkipForward();
+    }
+  }, [elapsed]);
+
+  useEffect(() => {
+    if (track === null) {
+      setTrack(rSong);
+    }
+  }, [track]);
+
   const handleRepeat = () => {
-    // if (audioPlayer.current?.duration)
+    setRepeat(!repeat);
+    setRsong(song);
   };
 
   function VolmBtns() {
@@ -195,7 +212,7 @@ function Player({ song }) {
             track?.imgURL && (
               <Box sx={{ display: 'flex', gap: '10px' }}>
                 <Stack>
-                  <img src={track?.imgURL} alt="song" className="w-full h-[4rem]" />
+                  <img src={track?.imgURL} alt="song" className="w-full h-[4rem] bg-cover bg-center" />
                 </Stack>
                 <Stack sx={{ display: 'flex', alignContent: 'center' }}>
                   <p className="text-sm font-thin">{track?.name}</p>
@@ -216,7 +233,7 @@ function Player({ song }) {
                 display: 'flex', justifyContent: 'flex-start', width: '40%', alignItems: 'center',
               }}
             >
-              <RepeatIcon fontSize="small" sx={{ color: 'violet', '&:hover': { color: 'white' } }} onClick={handleRepeat} />
+              <RepeatIcon fontSize="small" sx={{ color: repeat ? 'red' : 'violet', '&:hover': { color: 'white' } }} onClick={handleRepeat} />
               <SkipPreviousIcon fontSize="small" sx={{ color: 'violet', '&:hover': { color: 'white' } }} onClick={toggleSkipBack} />
 
               <FastRewindIcon fontSize="small" sx={{ color: 'violet', '&:hover': { color: 'white' } }} onClick={toggleBackward} />

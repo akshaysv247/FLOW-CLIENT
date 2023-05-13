@@ -9,7 +9,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import { songActions } from '../../Redux/Slice/SongSlice';
 import { LikeSong, checkLikedSong } from '../../Api/artistApi';
 
-function ArtistSongCard({ song, setSong, setToasting }) {
+function ArtistSongCard({ song, setToasting }) {
   const dispatch = useDispatch();
   const [liked, setLiked] = useState(false);
   const { id } = useSelector((state) => state.artist);
@@ -24,11 +24,9 @@ function ArtistSongCard({ song, setSong, setToasting }) {
     }
   };
   const playsong = () => {
-    setSong(song);
     dispatch(
       songActions.setSongDetails({
-        // eslint-disable-next-line object-shorthand
-        song: song,
+        song,
       }),
     );
   };
@@ -51,7 +49,7 @@ function ArtistSongCard({ song, setSong, setToasting }) {
       <img
         src={song.imgURL}
         alt="img"
-        className="h-44 w-48 rounded"
+        className="h-44 w-48 rounded bg-cover bg-center"
         onClick={playsong}
       />
       <div className="px-2 flex justify-between w-48">
