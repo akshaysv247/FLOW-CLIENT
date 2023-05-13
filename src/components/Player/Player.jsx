@@ -179,7 +179,7 @@ function Player({ song }) {
     }
   };
   useEffect(() => {
-    if (duration - elapsed === 0 && rSong) {
+    if (duration - elapsed === 0 && repeat) {
       setTrack(null);
     } else if (duration - elapsed === 0) {
       toggleSkipForward();
