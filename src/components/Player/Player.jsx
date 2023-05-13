@@ -31,6 +31,7 @@ import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 import VolumeMuteIcon from '@mui/icons-material/VolumeMute';
 import VolumeDownIcon from '@mui/icons-material/VolumeDown';
 import RepeatIcon from '@mui/icons-material/Repeat';
+import ShuffleIcon from '@mui/icons-material/Shuffle';
 // ----------------------------------------------------------------
 // import { getCommonSongs } from '../../Api/userApis';
 // #-Styled Components----------------------------------------------------------------
@@ -100,11 +101,23 @@ function Player({ song }) {
   const [elapsed, setElapsed] = useState(0);
   const [duration, setDuration] = useState(0);
   const [rSong, setRsong] = useState(null);
+  const [shuffle, setShuffle] = useState(false);
+  const [sIndex, setSindex] = useState(null);
 
   useEffect(() => {
     setTrack(song);
+    setIsPlaying(true);
+    const currentIndex = List.indexOf(song);
+    setIndex(currentIndex);
     if (repeat) {
       setRsong(song);
+    }
+    if (shuffle) {
+      let random = null;
+      do {
+        random = Math.floor(Math.random() * List.length);
+        setSindex(random);
+      } while (random === currentIndex);
     }
   }, [song]);
 
@@ -168,6 +181,7 @@ function Player({ song }) {
     } else if (List.length - 1 === index) {
       setIndex(0);
     }
+    setIsPlaying(true);
   };
   const toggleSkipBack = () => {
     if (index > 0) {
@@ -177,10 +191,19 @@ function Player({ song }) {
     } else if (index === 0) {
       setIndex(List.length - 1);
     }
+    setIsPlaying(true);
   };
   useEffect(() => {
     if (duration - elapsed === 0 && repeat) {
       setTrack(null);
+    } else if (duration - elapsed === 0 && shuffle) {
+      console.log(sIndex);
+      let random = null;
+      do {
+        random = Math.floor(Math.random() * List.length);
+      } while (random === index);
+      console.log(random);
+      setIndex(random);
     } else if (duration - elapsed === 0) {
       toggleSkipForward();
     }
@@ -192,9 +215,21 @@ function Player({ song }) {
     }
   }, [track]);
 
+  useEffect(() => {
+    if (shuffle) {
+      const random = Math.floor(Math.random() * List.length);
+      setSindex(random);
+    }
+  }, [shuffle]);
+
   const handleRepeat = () => {
     setRepeat(!repeat);
+    setShuffle(false);
     setRsong(song);
+  };
+  const handleShuffle = () => {
+    setShuffle(!shuffle);
+    setRepeat(false);
   };
 
   function VolmBtns() {
@@ -244,6 +279,7 @@ function Player({ song }) {
               <FastForwardIcon fontSize="small" sx={{ color: 'violet', '&:hover': { color: 'white' } }} onClick={toggleForward} />
 
               <SkipNextIcon fontSize="small" sx={{ color: 'violet', '&:hover': { color: 'white', cursor: 'pointer' } }} onClick={toggleSkipForward} />
+              <ShuffleIcon fontSize="small" sx={{ color: shuffle ? 'red' : 'violet', '&:hover': { color: 'white' } }} onClick={handleShuffle} />
             </Stack>
             <Stack
               direction="row"
