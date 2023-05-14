@@ -21,7 +21,7 @@ function PlaylistSong({
   const dispatch = useDispatch();
   const { id } = useSelector((state) => state.user);
   const [liked, setLiked] = useState(true);
-  const [deleted, setDeleted] = useState(true);
+  const [deleted, setDeleted] = useState(false);
   const [playing, setPlaying] = useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -42,7 +42,6 @@ function PlaylistSong({
   useEffect(() => {
     const invoke = async () => {
       const result = await checkLikedSong(id, song._id);
-      console.log(result);
       if (result.success) {
         setLiked(true);
       } else {
@@ -52,7 +51,6 @@ function PlaylistSong({
     invoke();
   }, []);
   const playsong = () => {
-    // setSong(song);
     dispatch(
       songActions.setSongDetails({
         song,
@@ -61,16 +59,16 @@ function PlaylistSong({
   };
   const handlePlaylist = async () => {
     const result = await removeFromPlaylist(listId, song._id);
+    console.log(result, 'resslt');
     if (result.success) {
-      console.log(result);
-      setDeleted(false);
+      setDeleted(true);
     }
   };
   const handleReport = () => {
     setReport(true);
     setTrack(song._id);
   };
-  if (deleted) {
+  if (!deleted) {
     return (
       <div key={song._id} className="w-full h-16 border rounded-md flex justify-between">
         <div className="h-full w-1/2 flex items-center gap-2">

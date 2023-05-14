@@ -1,3 +1,4 @@
+/* eslint-disable no-unsafe-optional-chaining */
 /* eslint-disable max-len */
 /* eslint-disable react/prop-types */
 /* eslint-disable prefer-destructuring */
@@ -33,7 +34,6 @@ import VolumeDownIcon from '@mui/icons-material/VolumeDown';
 import RepeatIcon from '@mui/icons-material/Repeat';
 import ShuffleIcon from '@mui/icons-material/Shuffle';
 // ----------------------------------------------------------------
-// import { getCommonSongs } from '../../Api/userApis';
 // #-Styled Components----------------------------------------------------------------
 const Div = styled('div')(({ theme }) => ({
   backgroundColor: 'transparent',
@@ -91,8 +91,8 @@ const VSlider = styled(Slider)(({ theme, ...props }) => ({
 
 function Player({ song }) {
   const List = useSelector((state) => state.song.list.list);
-  const [track, setTrack] = useState('');
   const audioPlayer = useRef();
+  const [track, setTrack] = useState('');
   const [index, setIndex] = useState(null);
   const [repeat, setRepeat] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -102,31 +102,32 @@ function Player({ song }) {
   const [duration, setDuration] = useState(0);
   const [rSong, setRsong] = useState(null);
   const [shuffle, setShuffle] = useState(false);
-  // const [sIndex, setSindex] = useState(null);
+  const [sIndex, setSindex] = useState(null);
 
   useEffect(() => {
     setTrack(song);
     setIsPlaying(true);
-    // let currentIndex = null;
-    // if (List) {
-    //   currentIndex = List.indexOf(song);
-    // }
-    // setIndex(currentIndex);
+    let currentIndex = null;
+    if (List) {
+      currentIndex = List?.indexOf(song);
+    }
+    setIndex(currentIndex);
     if (repeat) {
       setRsong(song);
     }
-    // if (shuffle) {
-    //   let random = null;
-    //   do {
-    //     random = Math.floor(Math.random() * List.length);
-    //     setSindex(random);
-    //   } while (random === currentIndex && currentIndex !== null);
-    // }
+    if (shuffle) {
+      let random = null;
+      do {
+        random = Math.floor(Math.random() * List?.length);
+        setSindex(random);
+      } while (random === currentIndex && currentIndex !== null);
+    }
   }, [song]);
 
   useEffect(() => {
-    if (index != null) {
+    if (index !== null && List?.length > 0) {
       setTrack(List[index]);
+      setIsPlaying(true);
     }
   }, [index]);
 
@@ -177,11 +178,11 @@ function Player({ song }) {
     audioPlayer.current.currentTime -= 10;
   };
   const toggleSkipForward = () => {
-    if (List.length - 1 > index) {
+    if (List?.length - 1 > index) {
       setIndex(index + 1);
     } else if (index === null) {
       setIndex(0);
-    } else if (List.length - 1 === index) {
+    } else if (List?.length - 1 === index) {
       setIndex(0);
     }
     setIsPlaying(true);
@@ -192,39 +193,39 @@ function Player({ song }) {
     } else if (index === null) {
       setIndex(0);
     } else if (index === 0) {
-      setIndex(List.length - 1);
+      setIndex(List?.length - 1);
     }
     setIsPlaying(true);
   };
   useEffect(() => {
     if (duration - elapsed === 0 && repeat) {
       setTrack(null);
+    } else if (duration - elapsed === 0 && shuffle) {
+      console.log(sIndex);
+      let random = null;
+      do {
+        random = Math.floor(Math.random() * List?.length);
+      } while (random === index);
+      setIndex(random);
     } else if (duration - elapsed === 0) {
       toggleSkipForward();
+      setIsPlaying(true);
     }
-    //  else if (duration - elapsed === 0 && shuffle) {
-    //   console.log(sIndex);
-    //   let random = null;
-    //   do {
-    //     random = Math.floor(Math.random() * List.length);
-    //   } while (random === index);
-    //   console.log(random);
-    //   setIndex(random);
-    // }
   }, [elapsed]);
 
   useEffect(() => {
     if (track === null) {
       setTrack(rSong);
+      setIsPlaying(true);
     }
   }, [track]);
 
-  // useEffect(() => {
-  //   if (shuffle) {
-  //     const random = Math.floor(Math.random() * List.length);
-  //     setSindex(random);
-  //   }
-  // }, [shuffle]);
+  useEffect(() => {
+    if (shuffle) {
+      const random = Math.floor(Math.random() * List?.length);
+      setSindex(random);
+    }
+  }, [shuffle]);
 
   const handleRepeat = () => {
     setRepeat(!repeat);

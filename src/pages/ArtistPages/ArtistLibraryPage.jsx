@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import LibraryBar from '../../components/LibraryComponents/LibraryBar';
-import { getMyPlaylists } from '../../Api/userApis';
 import ArtistHeader from '../../components/Header/ArtistHeader';
 import ArtistSidebar from '../../components/Sidebar/ArtistSidebar';
 import ArtistLiked from '../../components/LibraryComponents/ArtistLiked';
 import ArtistsPlayCard from '../../components/LibraryComponents/ArtistsPlayCard';
+import { getMyPlaylists } from '../../Api/artistApi';
 
 function ArtistLibraryPage() {
   const artistId = useSelector((state) => state.artist.id);
@@ -13,7 +13,6 @@ function ArtistLibraryPage() {
   useEffect(() => {
     const invoke = async () => {
       const result = await getMyPlaylists(artistId);
-      console.log(result);
       if (result.success) {
         setPlaylists(result.myPlaylists);
       }

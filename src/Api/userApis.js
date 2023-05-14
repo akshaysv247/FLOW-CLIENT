@@ -21,7 +21,6 @@ export const getProfile = async (id) => {
 };
 
 export const uploadPicture = async (uri, id) => {
-  console.log(id, uri);
   try {
     const response = await axios.post(`/upload-picture/${id}`, { uri }, {
       withCredentials: true,
@@ -81,7 +80,6 @@ export const getAllArtist = async () => {
       },
     });
     const { data } = response;
-    console.log(data);
     if (data) {
       return data;
     }
@@ -133,7 +131,6 @@ export const LikeSong = async (trackId, userId) => {
       },
     });
     const { data } = response;
-    console.log(data);
     if (data) {
       return data;
     }
@@ -142,7 +139,6 @@ export const LikeSong = async (trackId, userId) => {
   }
 };
 export const getLikedSongs = async (id) => {
-  console.log('isIsd', id);
   try {
     const response = await axios.get(`/get-liked-songs/${id}`, {
       withCredentials: true,
@@ -227,7 +223,6 @@ export const getSongsForPlayist = async () => {
 };
 
 export const updateMyPlaylist = async (obj, id) => {
-  console.log(id, obj);
   try {
     const response = await axios.put(`/update-playlist/${id}`, obj, {
       withCredentials: true,
@@ -235,7 +230,6 @@ export const updateMyPlaylist = async (obj, id) => {
         Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
     });
-    console.log(response, 'response');
     const { data } = response;
     if (data) {
       return data;
@@ -373,6 +367,7 @@ export const removeFromPlaylist = async (id, songId) => {
         Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
     });
+    console.log(response, 'response');
     const { data } = response;
     if (data) {
       return data;

@@ -137,7 +137,7 @@ function Header() {
               </Search>
               <select value={item} className="bg-[#240d42c4] h-[2.3rem] text-sm text-gray-500 rounded-md" onChange={(e) => setItem(e.target.value)}>
                 <option>Tracks</option>
-                <option>Playlist</option>
+                {/* <option>Playlist</option> */}
                 <option>Artist</option>
               </select>
             </form>

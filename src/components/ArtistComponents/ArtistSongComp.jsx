@@ -9,6 +9,7 @@ import { songActions } from '../../Redux/Slice/SongSlice';
 function ArtistSongComp({ track, setMessage }) {
   const dispatch = useDispatch();
   const [hidden, setHidden] = useState(false);
+  const [deleted, setDeleted] = useState(false);
   const handlePlay = () => {
     dispatch(
       songActions.setSongDetails({
@@ -30,27 +31,30 @@ function ArtistSongComp({ track, setMessage }) {
   const handleDelete = async () => {
     const result = await deleteSong(track._id);
     if (result.success) {
-      console.log(result);
+      console.log(result, 'resssss');
       setMessage(result.message);
+      setDeleted(true);
     }
   };
-  return (
-    <div key={track._id} className="w-full h-16 border rounded-md flex justify-between px-2">
-      <div className="flex items-center gap-2">
-        <img src={track.imgURL} alt="img" className="h-16 " />
-        <div>
-          <p className="text-lg font-bold">{track.name}</p>
-          <p className="text-sm font-thin">{track.artist}</p>
+  if (!deleted) {
+    return (
+      <div key={track._id} className="w-full h-16 border rounded-md flex justify-between px-2">
+        <div className="flex items-center gap-2">
+          <img src={track.imgURL} alt="img" className="h-16 " />
+          <div>
+            <p className="text-lg font-bold">{track.name}</p>
+            <p className="text-sm font-thin">{track.artist}</p>
+          </div>
+        </div>
+        <div className="flex items-center gap-2">
+          <Button sx={{ color: 'green', backgroundColor: 'pink' }} onClick={handlePlay}>Play</Button>
+          {!hidden ? <Button sx={{ color: 'white', backgroundColor: 'violet' }} onClick={handleHide}>Hide</Button>
+            : <Button sx={{ color: 'white', backgroundColor: 'blue' }} onClick={handleHide}>Un Hide</Button>}
+          <Button sx={{ color: 'white', backgroundColor: 'red' }} onClick={handleDelete}>Delelte</Button>
         </div>
       </div>
-      <div className="flex items-center gap-2">
-        <Button sx={{ color: 'green', backgroundColor: 'pink' }} onClick={handlePlay}>Play</Button>
-        {!hidden ? <Button sx={{ color: 'white', backgroundColor: 'violet' }} onClick={handleHide}>Hide</Button>
-          : <Button sx={{ color: 'white', backgroundColor: 'blue' }} onClick={handleHide}>Un Hide</Button>}
-        <Button sx={{ color: 'white', backgroundColor: 'red' }} onClick={handleDelete}>Delelte</Button>
-      </div>
-    </div>
-  );
+    );
+  }
 }
 
 export default ArtistSongComp;

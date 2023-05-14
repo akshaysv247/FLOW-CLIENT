@@ -253,7 +253,6 @@ export const updateMyPlaylist = async (obj, id) => {
         Authorization: `Bearer ${localStorage.getItem('artistToken')}`,
       },
     });
-    console.log(response, 'response');
     const { data } = response;
     if (data) {
       return data;
