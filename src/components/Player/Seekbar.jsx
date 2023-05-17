@@ -20,11 +20,11 @@ function Seekbar({
     onSeek(value);
   };
 
-  //   const handleInputCommit = () => {
-  //     // Handle the seek event when user releases the seekbar thumb
-  //     // Call your music player's seek method with the elapsed time
-  //     oncSeek(elapsed);
-  //   };
+  const handleInputCommit = () => {
+    // Handle the seek event when user releases the seekbar thumb
+    // Call your music player's seek method with the elapsed time
+    onSeek(elapsed);
+  };
   return (
     <div className="hidden sm:flex flex-row items-center">
       <Typography sx={{ color: 'silver' }}>{formatTime(elapsed)}</Typography>
@@ -34,9 +34,9 @@ function Seekbar({
         value={elapsed}
         max={duration}
         onChange={handleInputChange}
-        // onInput={handleInputChange}
-        // onMouseUp={handleInputCommit}
-        // onTouchEnd={handleInputCommit}
+        onInput={handleInputChange}
+        onMouseUp={handleInputCommit}
+        onTouchEnd={handleInputCommit}
         className="w-[65vw] h-1 rounded-lg"
       />
       <Typography sx={{ color: 'silver' }}>{formatTime(duration - elapsed)}</Typography>
