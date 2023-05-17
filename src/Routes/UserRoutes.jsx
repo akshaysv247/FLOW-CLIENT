@@ -70,10 +70,6 @@ function UserRoutes() {
           element={(<LibraryPage1 />)}
         />
       </Route>
-      {/* <Route
-        path="/feeds"
-        element={(<Feeds />)}
-      /> */}
     </Routes>
   );
 }

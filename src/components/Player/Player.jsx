@@ -13,7 +13,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import {
   styled,
-  Typography,
   Slider,
   Paper,
   Stack,
@@ -33,6 +32,7 @@ import VolumeMuteIcon from '@mui/icons-material/VolumeMute';
 import VolumeDownIcon from '@mui/icons-material/VolumeDown';
 import RepeatIcon from '@mui/icons-material/Repeat';
 import ShuffleIcon from '@mui/icons-material/Shuffle';
+import Seekbar from './Seekbar';
 // ----------------------------------------------------------------
 // #-Styled Components----------------------------------------------------------------
 const Div = styled('div')(({ theme }) => ({
@@ -74,7 +74,7 @@ const DBox = styled(Box)(({ theme }) => ({
   color: 'white',
 }));
 
-const VSlider = styled(Slider)(({ theme, ...props }) => ({
+const VSlider = styled(Slider)(({ theme }) => ({
   color: '#0b0618',
   height: '2',
   '&:hover': {
@@ -84,7 +84,7 @@ const VSlider = styled(Slider)(({ theme, ...props }) => ({
   '& .MuiSlider-thumb': {
     width: '13px',
     height: '13px',
-    display: props.thumbless ? 'none' : 'block',
+    // display: props.thumbless ? 'none' : 'block',
   },
 }));
 // ----------------------------------------------------------------
@@ -154,14 +154,6 @@ function Player({ song }) {
     }
   }, [isPlaying, song]);
 
-  function formatTime(time) {
-    if (time && !isNaN(time)) {
-      const minutes = Math.floor(time / 60) < 10 ? `0${Math.floor(time / 60)}` : Math.floor(time / 60);
-      const seconds = Math.floor(time % 60) < 10 ? `0${Math.floor(time % 60)}` : Math.floor(time % 60);
-      return `${minutes}:${seconds}`;
-    }
-    return '00:00';
-  }
   const togglePlay = () => {
     if (!isPlaying) {
       audioPlayer.current.play();
@@ -236,6 +228,10 @@ function Player({ song }) {
     setShuffle(!shuffle);
     setRepeat(false);
   };
+  const handleSeek = () => {
+    const seekbar = elapsed;
+    audioPlayer.currentTime = seekbar;
+  };
 
   function VolmBtns() {
     return mute ? <VolumeOffIcon sx={{ color: 'violet', '&:hover': { color: 'pink' } }} onClick={() => setMute(!mute)} />
@@ -304,9 +300,8 @@ function Player({ song }) {
               display: 'flex', justifyContent: 'flex', width: '100%', alignItems: 'center',
             }}
           >
-            <Typography sx={{ color: 'silver' }}>{formatTime(elapsed)}</Typography>
-            <VSlider thumbless value={elapsed} max={duration} onChange={(e, v) => setDuration(v)} />
-            <Typography sx={{ color: 'silver' }}>{formatTime(duration - elapsed)}</Typography>
+            {/* <VSlider thumbless value={elapsed} max={duration} onChange={(e, v) => setDuration(v)} /> */}
+            <Seekbar elapsed={elapsed} duration={duration} setDuration={setDuration} onSeek={handleSeek} />
           </Stack>
         </DBox>
       </CustomPaper>
