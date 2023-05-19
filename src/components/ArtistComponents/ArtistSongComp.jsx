@@ -1,6 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable react/prop-types */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Button } from '@mui/material';
 import { deleteSong, hideSong } from '../../Api/artistApi';
@@ -17,6 +17,11 @@ function ArtistSongComp({ track, setMessage }) {
       }),
     );
   };
+  useEffect(() => {
+    if (track.IsHide) {
+      setHidden(true);
+    }
+  }, []);
   const handleHide = async () => {
     const result = await hideSong(track._id);
     if (result.sucess) {
@@ -48,8 +53,8 @@ function ArtistSongComp({ track, setMessage }) {
         </div>
         <div className="flex items-center gap-2">
           <Button sx={{ color: 'green', backgroundColor: 'pink' }} onClick={handlePlay}>Play</Button>
-          {!hidden ? <Button sx={{ color: 'white', backgroundColor: 'violet' }} onClick={handleHide}>Hide</Button>
-            : <Button sx={{ color: 'white', backgroundColor: 'blue' }} onClick={handleHide}>Un Hide</Button>}
+          {!hidden && <Button sx={{ color: 'white', backgroundColor: 'violet' }} onClick={handleHide}>Hide</Button>}
+          {hidden && <Button sx={{ color: 'white', backgroundColor: 'blue' }} onClick={handleHide}>Un Hide</Button>}
           <Button sx={{ color: 'white', backgroundColor: 'red' }} onClick={handleDelete}>Delelte</Button>
         </div>
       </div>

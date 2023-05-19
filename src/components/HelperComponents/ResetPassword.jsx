@@ -8,11 +8,12 @@ import Button from '@mui/material/Button';
 import toast, { Toaster } from 'react-hot-toast';
 import { RecaptchaVerifier, signInWithPhoneNumber } from 'firebase/auth';
 import { Auth } from '../../Config/firebase.config';
-import { resetPassword } from '../../Api/authentication';
+import { getPhone, resetPassword } from '../../Api/authentication';
 
 function ResetPassword() {
   const [otpVerified, SetOtpVerified] = useState(false);
-  const [error, setError] = useState(false);
+  const [error, setError] = useState('');
+  // const [emailErr, setEmailErr] =
   const [res, setRes] = useState(false);
   const [vOtp, setVotp] = useState(false);
   const [gotOtp, setGotOtp] = useState(false);
@@ -30,31 +31,47 @@ function ResetPassword() {
   password.current = watch('password', '');
 
   // eslint-disable-next-line no-shadow
-  function setUpRecaptcha(phone) {
-    const recaptchaVerifier = new RecaptchaVerifier(
-      'recaptcha-seeker-container',
-      {},
-      Auth,
-    );
-    recaptchaVerifier.render();
-    signInWithPhoneNumber(Auth, `+91${phone}`, recaptchaVerifier).then((response) => {
-      setRes(response);
-      document.getElementById('recaptcha-seeker-container').style.display = 'none';
-      console.log(response);
-    });
+  async function setUpRecaptcha(phone) {
+    try {
+      const recaptchaVerifier = new RecaptchaVerifier(
+        'recaptcha-seeker-container',
+        {},
+        Auth,
+      );
+      console.log(phone);
+      recaptchaVerifier.render();
+
+      const ress = await signInWithPhoneNumber(Auth, `+91${phone}`, recaptchaVerifier);
+      console.log(ress, 're');
+      if (ress) {
+        setGotOtp(true);
+        setRes(ress);
+        const element = document.getElementById('recaptcha-seeker-container');
+        element.style.display = 'none';
+        // document.getElementById('recaptcha-seeker-container').style.display = 'none';
+      }
+    } catch (error) {
+      console.log(error.message);
+      toast(error.message);
+    }
   }
-  function setResendRecaptcha(phone) {
-    const recaptchaVerifier = new RecaptchaVerifier(
-      'recaptcha-seeker-container-2',
-      {},
-      Auth,
-    );
-    recaptchaVerifier.render();
-    signInWithPhoneNumber(Auth, `+91${phone}`, recaptchaVerifier).then((response) => {
-      setRes(response);
-      document.getElementById('recaptcha-seeker-container-2').style.display = 'none';
-      console.log(response);
-    });
+  async function setResendRecaptcha(phone) {
+    try {
+      const recaptchaVerifier = new RecaptchaVerifier(
+        'recaptcha-seeker-container-2',
+        {},
+        Auth,
+      );
+      recaptchaVerifier.render();
+      const ress = await signInWithPhoneNumber(Auth, `+91${phone}`, recaptchaVerifier);
+      if (ress) {
+        setRes(ress);
+        const element = document.getElementById('recaptcha-seeker-container-2');
+        element.style.display = 'none';
+      }
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   const validateEmail = (email) => {
@@ -62,17 +79,21 @@ function ResetPassword() {
     return regex.test(email);
   };
 
-  const handleVerify = (e) => {
+  const handleVerify = async (e) => {
     e.preventDefault();
-    if (email && phone) {
+    if (email) {
       const isValid = validateEmail(email);
+      console.log(isValid, 'valid');
       if (isValid) {
-        if (phone.length === 10) {
-          setGotOtp(true);
-          setUpRecaptcha(phone);
-        } else {
-          setError('Please give a valid phone number.');
+        const result = await getPhone(email);
+        console.log(result, 'phoneress');
+        if (result.success) {
+          setPhone(result.phoneNo);
+          // setGotOtp(true);
+          setUpRecaptcha(result.phoneNo);
         }
+        setError(result.message);
+        toast(result.message);
       } else {
         setError('Please give a valid email');
       }
@@ -83,7 +104,7 @@ function ResetPassword() {
   const handleVerificationOtp = async () => {
     try {
       await res.confirm(vOtp).then((result) => {
-        console.log(result);
+        console.log(result, 'otp verified');
         toast.success(result.message);
         SetOtpVerified(true);
       });
@@ -156,7 +177,7 @@ function ResetPassword() {
                 <input
                   type="password"
                   placeholder="Enter Password"
-                  className="w-full rounded-md border border-[#e727ca] p-2"
+                  className="w-full rounded-md border border-[#e727ca] p-2 outline-none"
                   {...register('password', {
                     required: 'Fill this field with valid password',
                     minLength: {
@@ -177,17 +198,17 @@ function ResetPassword() {
                 <input
                   type="password"
                   placeholder="Enter your password"
-                  className="w-full rounded-md border border-[#e727ca] p-2"
+                  className="w-full rounded-md border border-[#e727ca] p-2 outline-none"
                   {...register('ConfirmPassword', {
                     required: 'Please confirm your password',
                     validate: validatePasswordMatch,
                   })}
                 />
                 {errors.ConfirmPassword && errors.ConfirmPassword.type === 'required' && (
-                <p className="text-red-500">Confirm Password is required</p>
+                <p className="text-black-800">Confirm Password is required</p>
                 )}
                 {errors.ConfirmPassword && errors.ConfirmPassword.type === 'validate' && (
-                <p className="text-red-500">Passwords do not match</p>
+                <p className="text-black-800">Passwords do not match</p>
                 )}
               </div>
               <div className="flex flex-col w-full justify-center mt-3 items-center">
@@ -206,26 +227,19 @@ function ResetPassword() {
         )
         : (
           <form className="w-508 h-510 bg-[#ff00e1b6] flex flex-col justify-center p-10 rounded-lg hover:ease-in-out transition-all" onSubmit={handleVerify}>
-            <h1 className="text-xl font-extrabold text-center">Verify Your Account</h1>
+            <h1 className="text-2xl font-extrabold text-center">Verify Your Account</h1>
             <hr />
             <div className="flex flex-col justify-center">
               <h1 className="text-xl font-bold mt-3">Enter Your Email Address</h1>
               <input
                 type="email"
-                className="h-10 w-full rounded-md "
+                className="h-10 w-full rounded-md outline-none"
                 placeholder="Enter your email address here"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                required="false"
               />
-              <h1 className="text-xl font-bold mt-3">Enter Your phone number</h1>
-              <input
-                type="number"
-                className="h-10 w-full rounded-md"
-                placeholder="Enter your phone number here"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-              />
-              { error && <span className="text-white">{error}</span>}
+              { error && <span className="text-grey-800">{error}</span>}
               <div id="recaptcha-seeker-container" className="mt-3" />
               {
               gotOtp && (
@@ -233,7 +247,7 @@ function ResetPassword() {
                   <h1 className="text-xl font-bold mt-3">Enter the OTP we send</h1>
                   <input
                     type="number"
-                    className="h-10 w-full rounded-md mt-3"
+                    className="h-10 w-full rounded-md mt-3 outline-none"
                     placeholder="Enter your OTP here"
                     value={vOtp}
                     onChange={(e) => setVotp(e.target.value)}

@@ -17,6 +17,7 @@ import {
   Paper,
   Stack,
   Box,
+  // Typography,
 } from '@mui/material';
 
 // #-ICONS----------------------------------------------------------------
@@ -228,10 +229,6 @@ function Player({ song }) {
     setShuffle(!shuffle);
     setRepeat(false);
   };
-  const handleSeek = () => {
-    const seekbar = elapsed;
-    audioPlayer.currentTime = seekbar;
-  };
 
   function VolmBtns() {
     return mute ? <VolumeOffIcon sx={{ color: 'violet', '&:hover': { color: 'pink' } }} onClick={() => setMute(!mute)} />
@@ -300,8 +297,7 @@ function Player({ song }) {
               display: 'flex', justifyContent: 'flex', width: '100%', alignItems: 'center',
             }}
           >
-            {/* <VSlider thumbless value={elapsed} max={duration} onChange={(e, v) => setDuration(v)} /> */}
-            <Seekbar elapsed={elapsed} duration={duration} setDuration={setDuration} onSeek={handleSeek} />
+            <Seekbar elapsed={elapsed} duration={duration} setDuration={setDuration} setElapsed={setElapsed} audio={audioPlayer} />
           </Stack>
         </DBox>
       </CustomPaper>

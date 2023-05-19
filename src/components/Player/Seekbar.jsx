@@ -4,7 +4,7 @@ import { Typography } from '@mui/material';
 import React from 'react';
 
 function Seekbar({
-  elapsed, duration, onSeek,
+  elapsed, duration, audio, setElapsed,
 }) {
   function formatTime(time) {
     if (time && !isNaN(time)) {
@@ -14,32 +14,25 @@ function Seekbar({
     }
     return '00:00';
   }
-  const handleInputChange = (event) => {
-    const value = parseFloat(event.target.value);
-    // setDuration(value);
-    onSeek(value);
-  };
-
-  const handleInputCommit = () => {
-    // Handle the seek event when user releases the seekbar thumb
-    // Call your music player's seek method with the elapsed time
-    onSeek(elapsed);
+  const handleChange = (e) => {
+    const seektime = parseFloat(e.target.value);
+    // eslint-disable-next-line no-param-reassign
+    audio.current.currentTime = seektime;
+    setElapsed(seektime);
   };
   return (
     <div className="hidden sm:flex flex-row items-center">
-      <Typography sx={{ color: 'silver' }}>{formatTime(elapsed)}</Typography>
+      <Typography sx={{ color: 'silver', fontSize: '15px' }}>{formatTime(elapsed)}</Typography>
       <input
         type="range"
         step="any"
         value={elapsed}
+        min="0"
         max={duration}
-        onChange={handleInputChange}
-        onInput={handleInputChange}
-        onMouseUp={handleInputCommit}
-        onTouchEnd={handleInputCommit}
-        className="w-[65vw] h-1 rounded-lg"
+        onChange={handleChange}
+        className="w-[70vw] bg-[#22023b] h-1"
       />
-      <Typography sx={{ color: 'silver' }}>{formatTime(duration - elapsed)}</Typography>
+      <Typography sx={{ color: 'silver', fontSize: '15px' }}>{formatTime(duration - elapsed)}</Typography>
     </div>
   );
 }

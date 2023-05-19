@@ -49,7 +49,7 @@ function ArtistCard({ artist, setToasting }) {
   return (
     <div key={artist._id} className="w-52 h-72 bg-gradient-to-r from-[#29073d] to-[#0e030e] rounded-md hover:scale-105 flex flex-col items-center py-2 gap-2">
       <div onClick={handleClick} className="w-44 h-52 bg-[#431643] rounded relative">
-        {artist ? <img src={artist?.ImgUrl} className="h-full object-cover object-center rounded" alt="img" /> : <img src={noProfile} alt="img" className="h-full object-cover object-center rounded" />}
+        {artist.ImgUrl ? <img src={artist?.ImgUrl} className="h-full object-cover object-center rounded" alt="img" /> : <img src={noProfile} alt="img" className="h-full object-cover object-center rounded" />}
       </div>
       <div>
         <h2 className="text-white font-bold text-sm text-center shadow-lg">{artist.name}</h2>

@@ -26,6 +26,7 @@ function ArtistProfile() {
   const [artist, setArtist] = useState([]);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
+  const [error, setError] = useState('');
   const dispatch = useDispatch();
 
   const { id, ImgURL } = useSelector((state) => state.artist);
@@ -38,26 +39,45 @@ function ArtistProfile() {
         setUploadedUrl(ImgURL);
         setName(profile.artist.name);
         setEmail(profile.artist.email);
-        console.log(profile);
       }
     }
     invoke();
   }, []);
   const handleEdit = () => {
-    setEdit(!edit);
+    setEdit(true);
+  };
+  const validateEmail = (email) => {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
   };
   const handleEditProfile = async (data) => {
     data.preventDefault();
-    const response = await updateProfile(id, name, email, uploadedUrl);
-    console.log(response, 'ggg');
-    if (response.success) {
-      dispatch(artistAcions.setProfileEdit({
-        artist: response.artist,
-        name: response.name,
-        email: response.email,
-        ImgURL: response.imgUrl,
-      }));
-      toast.success('You have made changes successfully.');
+    if (name && email) {
+      if (name.length > 3 && name.length < 20) {
+        const isValid = validateEmail(email);
+        if (isValid) {
+          const response = await updateProfile(id, name, email, uploadedUrl);
+          if (response.success) {
+            dispatch(artistAcions.setProfileEdit({
+              artist: response.artist,
+              name: response.artist.name,
+              email: response.artist.email,
+              ImgURL: response.artist.ImgUrl,
+            }));
+            setArtist(response.artist);
+            setName(response.artist.name);
+            setEmail(response.artist.email);
+            setEdit(false);
+            toast.success('You have made changes successfully.');
+          }
+        } else {
+          setError('Please provide a valid email address');
+        }
+      } else {
+        setError('name must be at least 4 characters long and maximum length is 20');
+      }
+    } else {
+      setError('please fill all the fields');
     }
   };
   const handleProPic = () => {
@@ -69,32 +89,27 @@ function ArtistProfile() {
     if (imageUpload == null) return;
     const imageRef = ref(storage, `profile/${imageUpload.name}`);
     const uploadImage = uploadBytesResumable(imageRef, imageUpload);
-    console.log(uploadImage);
     uploadImage.on(
       'state_changed',
       (snapshot) => {
         const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
-        // setProgresspercent(progress);
         setProgress(progress);
       },
       (error) => {
         console.log(error);
       },
       () => {
-        getDownloadURL(uploadImage.snapshot.ref).then((downloadURL) => {
+        getDownloadURL(uploadImage.snapshot.ref).then(async (downloadURL) => {
           setLoading(false);
           setUploadedUrl(downloadURL);
           setEditPic(false);
           dispatch(artistAcions.setArtistImg(downloadURL));
-        });
-        async function upload(uri) {
-          const picture = await uploadPicture(id, uri);
+          const picture = await uploadPicture(id, downloadURL);
           if (picture) {
             toast.success(picture.message);
-            dispatch(artistAcions.setArtistImg(picture.ImgUrl));
+            dispatch(artistAcions.setArtistImg(picture.artist.ImgUrl));
           }
-        }
-        upload(uploadedUrl);
+        });
       },
     );
   };
@@ -113,8 +128,7 @@ function ArtistProfile() {
                   </svg>
                 </span>
               )}
-
-              {uploadedUrl && <img src={uploadedUrl} alt="profile" className="w-32 h-32 rounded-full" />}
+              {uploadedUrl && <img src={uploadedUrl} alt="profile" className="w-32 h-32 rounded-full object-cover object-center" />}
             </div>
           </div>
           {visible && <Button variant="contained" onClick={handleProPic}>Edit Picture</Button>}
@@ -173,6 +187,7 @@ function ArtistProfile() {
               onChange={(e) => setEmail(e.target.value)}
             />
           </div>
+          {error && <span className="text-sm text-red-700">{error}</span>}
           <div className="w-full flex justify-center mt-4">
             <button className="h-10 bg-indigo-700 transition duration-150 ease-in-out hover:bg-indigo-600 rounded text-white px-6 py-2 text-md" type="submit">Submit</button>
           </div>
@@ -184,13 +199,16 @@ function ArtistProfile() {
           <ExitToAppIcon />
           Log out
         </button>
+        {!edit && (
+        // eslint-disable-next-line jsx-a11y/control-has-associated-label
         <button
           className="h-10 bg-indigo-700 transition duration-150 ease-in-out hover:bg-indigo-600 rounded text-white px-6 py-2 text-md"
           type="button"
           onClick={handleEdit}
         >
-          {edit ? 'save' : 'Edit Profile' }
+          Edit
         </button>
+        )}
       </div>
     </div>
   );

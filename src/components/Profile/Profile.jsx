@@ -10,6 +10,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { ref, getDownloadURL, uploadBytesResumable } from 'firebase/storage';
 import { Button } from '@mui/material';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import { storage } from '../../Config/firebase.config';
 import { getProfile, updateProfile, uploadPicture } from '../../Api/userApis';
@@ -27,6 +29,7 @@ function Profile() {
   const [user, setUser] = useState('');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
+  const [error, setError] = useState('');
   const { id, ImgURL } = useSelector((state) => state.user);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -50,18 +53,54 @@ function Profile() {
     setEdit(!edit);
   };
 
+  // const handleEditProfile = async (data) => {
+  //   data.preventDefault();
+  //   if (data) {
+  //     const result = await updateProfile(id, name, email);
+  //     if (result) {
+  //       setName(result.name);
+  //       setEmail(result.email);
+  //       dispatch(userActions.setUpdateProfile({
+  //         name: result.name,
+  //         email: result.email,
+  //       }));
+  //     }
+  //   }
+  // };
+  const validateEmail = (email) => {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
+  };
+
   const handleEditProfile = async (data) => {
     data.preventDefault();
-    if (data) {
-      const result = await updateProfile(id, name, email);
-      if (result) {
-        setName(result.name);
-        setEmail(result.email);
-        dispatch(userActions.setUpdateProfile({
-          name: result.name,
-          email: result.email,
-        }));
+    if (name && email) {
+      if (name.length > 3 && name.length < 20) {
+        const isValid = validateEmail(email);
+        if (isValid) {
+          const response = await updateProfile(id, name, email);
+          console.log(response, 'ggg');
+          if (response.success) {
+            dispatch(userActions.setUpdateProfile({
+              user: response.artist,
+              name: response.artist.name,
+              email: response.artist.email,
+              ImgURL: response.artist.ImgUrl,
+            }));
+            setUser(response.artist);
+            setName(response.artist.name);
+            setEmail(response.artist.email);
+            setEdit(false);
+            toast.success('You have made changes successfully.');
+          }
+        } else {
+          setError('Please provide a valid email address');
+        }
+      } else {
+        setError('name must be at least 4 characters long and maximum length is 20');
       }
+    } else {
+      setError('please fill all the fields');
     }
   };
 
@@ -79,31 +118,30 @@ function Profile() {
       'state_changed',
       (snapshot) => {
         const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
-        // setProgresspercent(progress);
         setProgress(progress);
       },
       (error) => {
         console.log(error);
       },
       () => {
-        getDownloadURL(uploadImage.snapshot.ref).then((downloadURL) => {
+        getDownloadURL(uploadImage.snapshot.ref).then(async (downloadURL) => {
           setLoading(false);
           setUploadedUrl(downloadURL);
-        });
-        async function upload(uri) {
-          const picture = await uploadPicture(uri, id);
+          setEditPic(false);
+          dispatch(userActions.setUserImg(downloadURL));
+          const picture = await uploadPicture(downloadURL, id);
           if (picture) {
-            // toast.success(picture.message);
-            dispatch(userActions.setUserImg(uploadedUrl));
+            toast.success(picture.message);
+            dispatch(userActions.setUserImg(picture.artist.ImgUrl));
           }
-        }
-        upload(uploadedUrl);
+        });
       },
     );
   };
 
   return (
     <div className="w-full h-full bg-transparent grid justify-center">
+      <ToastContainer />
       <div className="mt-5 flex flex-col justify-center ">
         <div className="w-full h-full mt-3 flex flex-col justify-center">
           <div className="w-full flex justify-center">
@@ -117,7 +155,7 @@ function Profile() {
                 </span>
               )}
 
-              {uploadedUrl && <img src={uploadedUrl} alt="profile" className="w-32 h-32 rounded-full bg-center bg-cover object-center object-cover" />}
+              {uploadedUrl && <img src={uploadedUrl} alt="profile" className="w-32 h-32 rounded-full object-center object-cover" />}
             </div>
           </div>
           {visible && <Button variant="contained" onClick={handleProPic}>Edit Picture</Button>}
@@ -175,6 +213,7 @@ function Profile() {
               onChange={(e) => setEmail(e.target.value)}
             />
           </div>
+          {error && <span className="text-sm text-red-700">{error}</span>}
           <div className="w-full flex justify-center mt-4">
             <button className="h-10 bg-indigo-700 transition duration-150 ease-in-out hover:bg-indigo-600 rounded text-white px-6 py-2 text-md" type="submit">Submit</button>
           </div>
@@ -186,13 +225,15 @@ function Profile() {
           <ExitToAppIcon />
           Log out
         </button>
+        {!edit && (
         <button
           className="h-10 bg-indigo-700 transition duration-150 ease-in-out hover:bg-indigo-600 rounded text-white px-6 py-2 text-md"
           type="button"
           onClick={handleEdit}
         >
-          {edit ? 'save' : 'Edit Profile' }
+          Edit
         </button>
+        )}
       </div>
     </div>
   );

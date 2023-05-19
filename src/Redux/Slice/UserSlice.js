@@ -35,8 +35,10 @@ export const UserSlice = createSlice({
       state.ImgURL = action.payload;
     },
     setUpdateProfile: (state, action) => {
+      state.user = action.payload.artist;
       state.name = action.payload.name;
       state.email = action.payload.email;
+      state.ImgURL = action.payload.ImgURL;
     },
   },
 });

@@ -85,3 +85,15 @@ export const validateUser = async (id) => {
     return error.response.data.error;
   }
 };
+
+export const getPhone = async (email) => {
+  try {
+    const response = await axios.get(`/get-phone/${email}`);
+    const { data } = response;
+    if (data) {
+      return data;
+    }
+  } catch (error) {
+    return error.response.data.error;
+  }
+};

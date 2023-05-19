@@ -158,7 +158,7 @@ function ArtistLogin() {
           </form>
           <div className="flex items-center justify-center">
             <Link to="/">
-              <p className="text-black font-serif">Login as an FAN ?</p>
+              <p className="text-white font-serif">Login as an FAN ?</p>
             </Link>
           </div>
         </div>
