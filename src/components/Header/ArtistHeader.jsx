@@ -139,13 +139,12 @@ function ArtistHeader() {
                   inputProps={{ 'aria-label': 'search' }}
                   value={searching}
                   onChange={handleChange}
-                  // onKeyDown={handleSubmit}
                 />
               </Search>
               <select value={item} className="bg-[#240d42c4] h-[2.3rem] rounded-md text-sm text-gray-500" onChange={(e) => setItem(e.target.value)}>
                 <option>Tracks</option>
                 {/* <option>Playlist</option> */}
-                <option>Artist</option>
+                {/* <option>Artist</option> */}
               </select>
             </form>
             {searching && <SearchResult result={result} arts={arts} plays={plays} />}

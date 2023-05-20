@@ -4,7 +4,7 @@ import { useLocation } from 'react-router-dom';
 import Header from '../components/Header/Header';
 import Sidebar from '../components/Sidebar/Sidebar';
 import { getAllTracksOfAnArtist, getSpecificArtist } from '../Api/userApis';
-import SongComponent from '../components/SongComponents/SongComponent';
+import PlaylistSongComponent from '../components/SongComponents/PlaylistSong';
 import noProfile from '../Assets/Avatars/Profile.webp';
 
 function ArtistOverviewPage() {
@@ -23,7 +23,7 @@ function ArtistOverviewPage() {
       const result = await getAllTracksOfAnArtist(Artist);
       if (result.success) {
         setTrack(result.songs);
-        console.log(result);
+        console.log(result.songs, 'ress');
       }
     };
     getlist();
@@ -47,11 +47,10 @@ function ArtistOverviewPage() {
               <div className="flex flex-col">
                 <p className="font-extrabold text-5xl text-white">{artist.name}</p>
               </div>
-              {/* <ToastContainer /> */}
             </div>
             <div className="w-full h-[54vh] bg-transparent rounded-md flex-flex-col gap-2 overflow-auto px-3 py-2">
               {track.map((song) => (
-                <SongComponent song={song} key={song._id} />
+                <PlaylistSongComponent song={song} key={song._id} />
               ))}
             </div>
           </div>
