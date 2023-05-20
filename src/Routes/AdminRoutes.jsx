@@ -1,5 +1,6 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import AdminAddTrack from '../pages/AdminPages/AdminAddTrack';
 import AdminArtistDetPage from '../pages/AdminPages/AdminArtistDetPage';
 import AdminHomePage from '../pages/AdminPages/AdminHomePage';
@@ -14,13 +15,12 @@ import { AdminProtectedRoute } from '../utils/ProtectedRoute';
 import AdminCopyrights from '../pages/AdminPages/AdminCopyrights';
 
 function AdminRoutes() {
+  const { adminToken } = useSelector((state) => state.admin);
   return (
     <Routes>
       <Route
         path="/login"
-        element={
-          <AdminLoginPage />
-        }
+        element={adminToken ? <AdminHomePage /> : <AdminLoginPage />}
       />
       <Route element={(<AdminProtectedRoute />)}>
         <Route

@@ -78,7 +78,7 @@ function artistSignup() {
     }
   };
 
-  function setUpRecaptcha(phone) {
+  async function setUpRecaptcha(phone) {
     console.log(phone);
     const recaptchaVerifier = new RecaptchaVerifier(
       'recaptcha-seeker-container',
@@ -86,15 +86,18 @@ function artistSignup() {
       Auth,
     );
     recaptchaVerifier.render();
-    signInWithPhoneNumber(Auth, `+91${phone}`, recaptchaVerifier).then((response) => {
-      setRes(response);
-    });
+    const ress = await signInWithPhoneNumber(Auth, `+91${phone}`, recaptchaVerifier);
+    if (ress) {
+      setRes(ress);
+      const element = document.getElementById('recaptcha-seeker-container');
+      element.style.display = 'none';
+      setOtp(true);
+      toast.success('OTP has been sent successfully');
+    }
   }
   const handleVerification = () => {
     try {
       setUpRecaptcha(phone);
-      setOtp(true);
-      toast.success('OTP has been sent successfully');
     } catch (error) {
       console.log(error.message);
       toast.error(error.message);
@@ -235,6 +238,7 @@ function artistSignup() {
                     <VerifiedIcon className="text-[blue] w-16 h-14" />
                   )}
                 </div>
+                {!verified && (
                 <div className="flex w-full items-center mt-2">
                   {seconds > 0 || minutes > 0 ? (
                     <p className="text-xl text-black">
@@ -248,15 +252,16 @@ function artistSignup() {
                   )}
 
                   {!seconds > 0 && !minutes > 0 && (
-                    <Button
-                      className="w-full bg-blue"
-                      onClick={resendOTP}
-                      variant="contained"
-                    >
-                      Resend OTP
-                    </Button>
+                  <Button
+                    className="w-full bg-blue"
+                    onClick={resendOTP}
+                    variant="contained"
+                  >
+                    Resend OTP
+                  </Button>
                   )}
                 </div>
+                )}
               </div>
             </div>
           )}

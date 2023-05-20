@@ -30,6 +30,7 @@ function ArtistList() {
           navigate('admin/login');
         } else {
           setArtist(result.artists);
+          console.log(result.artists, 'artist');
         }
       } catch (error) {
         setalert(error.message);
@@ -177,6 +178,21 @@ function ArtistList() {
             >
               UnVerify
             </button>
+          )}
+        </div>
+      ),
+    },
+    {
+      field: 'isRequested',
+      headerName: 'Verification Requests',
+      width: 120,
+      editable: true,
+      renderCell: (params) => (
+        <div>
+          {params.row.isRequested ? (
+            <p className="text-green-500 py-1 px-3 font-bold">Request reached</p>
+          ) : (
+            <p className="text-red-600 py-1 px-3 font-bold">Not reached</p>
           )}
         </div>
       ),

@@ -48,7 +48,6 @@ function ResetPassword() {
         setRes(ress);
         const element = document.getElementById('recaptcha-seeker-container');
         element.style.display = 'none';
-        // document.getElementById('recaptcha-seeker-container').style.display = 'none';
       }
     } catch (error) {
       console.log(error.message);

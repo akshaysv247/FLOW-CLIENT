@@ -8,12 +8,16 @@ import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import { Button } from '@mui/material';
 import { useSelector, useDispatch } from 'react-redux';
 import { toast, ToastContainer } from 'react-toastify';
+import VerifiedIcon from '@mui/icons-material/Verified';
 import 'react-toastify/dist/ReactToastify.css';
 import { ref, getDownloadURL, uploadBytesResumable } from 'firebase/storage';
+import { useNavigate } from 'react-router-dom';
 import { storage } from '../../Config/firebase.config';
 import { artistAcions } from '../../Redux/Slice/ArtistSlice';
 import Progress from '../HelperComponents/Progress';
-import { getProfile, uploadPicture, updateProfile } from '../../Api/artistApi';
+import {
+  getProfile, uploadPicture, updateProfile, getVerify,
+} from '../../Api/artistApi';
 
 function ArtistProfile() {
   const [visible, setVisible] = useState(false);
@@ -27,7 +31,9 @@ function ArtistProfile() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [error, setError] = useState('');
+  const [pending, setPending] = useState(false);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const { id, ImgURL } = useSelector((state) => state.artist);
 
@@ -80,9 +86,20 @@ function ArtistProfile() {
       setError('please fill all the fields');
     }
   };
+  const handleLogout = () => {
+    dispatch(artistAcions.setArtistLogout());
+    navigate('/artist/login');
+  };
   const handleProPic = () => {
     setEditPic(true);
     setVisible(false);
+  };
+  const handleVerify = async () => {
+    const result = await getVerify(id);
+    if (result.success) {
+      toast.success(result.message);
+      setPending(true);
+    }
   };
   const handleProfilePic = async () => {
     setLoading(true);
@@ -155,12 +172,18 @@ function ArtistProfile() {
           )}
           <h1 className="text-3xl font-semibold text-white text-center">
             {artist.name}
+            {artist.isVerified && <VerifiedIcon sx={{ color: 'blue' }} />}
           </h1>
           <p className="text-white text-center">{artist.email}</p>
           <p className="text-white text-center">
             PH:
             {artist.phone}
           </p>
+          {!artist.isVerified && (
+          <div className="flex justify-center">
+            {!pending ? <Button onClick={handleVerify}>Get Verify</Button> : <p className="text-center text-md text-blue-300">Pending</p>}
+          </div>
+          )}
         </div>
         <hr />
       </div>
@@ -195,7 +218,11 @@ function ArtistProfile() {
       </div>
       )}
       <div className="flex w-full gap-2 justify-center">
-        <button className="h-10 bg-indigo-700 transition duration-150 ease-in-out hover:bg-indigo-600 rounded text-white px-6 py-2 text-md" type="button">
+        <button
+          className="h-10 bg-indigo-700 transition duration-150 ease-in-out hover:bg-indigo-600 rounded text-white px-6 py-2 text-md"
+          type="button"
+          onClick={handleLogout}
+        >
           <ExitToAppIcon />
           Log out
         </button>

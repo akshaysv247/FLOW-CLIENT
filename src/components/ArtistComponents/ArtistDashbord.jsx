@@ -73,7 +73,7 @@ function ArtistDashbord() {
         </div>
         <div className="pt-4 ">
           <h1 className="ml-3 text-2xl font-extrabold">New Songs</h1>
-          <div className="flex flex-wrap gap-2 px-2 overflow-auto">
+          <div className="flex flex-wrap h-[50vh] gap-2 px-2 overflow-auto">
             {songs.map((track) => (
               <ArtistSongCard
                 song={track}

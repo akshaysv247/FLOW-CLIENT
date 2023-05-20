@@ -11,13 +11,13 @@ function LibraryBar() {
       >
         Playlist
       </button>
-      <button
+      {/* <button
         type="button"
         className={playlist ? 'bg-transparent' : 'bg-gray-600 px-2 py-1 rounded-m'}
         onClick={() => setPlaylist(false)}
       >
         Artists
-      </button>
+      </button> */}
     </div>
   );
 }

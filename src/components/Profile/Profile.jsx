@@ -53,20 +53,6 @@ function Profile() {
     setEdit(!edit);
   };
 
-  // const handleEditProfile = async (data) => {
-  //   data.preventDefault();
-  //   if (data) {
-  //     const result = await updateProfile(id, name, email);
-  //     if (result) {
-  //       setName(result.name);
-  //       setEmail(result.email);
-  //       dispatch(userActions.setUpdateProfile({
-  //         name: result.name,
-  //         email: result.email,
-  //       }));
-  //     }
-  //   }
-  // };
   const validateEmail = (email) => {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return regex.test(email);
@@ -137,6 +123,9 @@ function Profile() {
         });
       },
     );
+  };
+  const handleLogout = () => {
+    dispatch(userActions.setLogout());
   };
 
   return (
@@ -221,7 +210,11 @@ function Profile() {
       </div>
       )}
       <div className="flex w-full gap-2 justify-center">
-        <button className="h-10 bg-indigo-700 transition duration-150 ease-in-out hover:bg-indigo-600 rounded text-white px-6 py-2 text-md" type="button">
+        <button
+          className="h-10 bg-indigo-700 transition duration-150 ease-in-out hover:bg-indigo-600 rounded text-white px-6 py-2 text-md"
+          type="button"
+          onClick={handleLogout}
+        >
           <ExitToAppIcon />
           Log out
         </button>

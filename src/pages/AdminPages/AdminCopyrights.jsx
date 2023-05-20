@@ -59,19 +59,19 @@ function AdminCopyrights() {
                   <tbody className="bg-white divide-y divide-gray-200" />
                   {reports.map((rep) => (
                     <tr key={rep._id}>
-                      <td>{rep.song.name}</td>
-                      <td>{rep.song.artist}</td>
+                      <td>{rep.song?.name}</td>
+                      <td>{rep.song?.artist}</td>
                       <td>
                         <ul>
                           {rep.complaint.map((comp) => (
-                            <li key={comp._id}>{comp.createdBy.name}</li>
+                            <li key={comp._id}>{comp?.createdBy?.name}</li>
                           ))}
                         </ul>
                       </td>
                       <td>
                         <ul>
                           {rep.complaint.map((comp) => (
-                            <li key={comp._id}>{comp.report}</li>
+                            <li key={comp._id}>{comp?.report}</li>
                           ))}
                         </ul>
                       </td>

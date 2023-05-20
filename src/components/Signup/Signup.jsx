@@ -78,7 +78,7 @@ function Signup() {
       toast.error('Something went wrong');
     }
   };
-  function setUpRecaptcha(phone) {
+  async function setUpRecaptcha(phone) {
     console.log(phone);
     const recaptchaVerifier = new RecaptchaVerifier(
       'recaptcha-seeker-container',
@@ -86,15 +86,18 @@ function Signup() {
       Auth,
     );
     recaptchaVerifier.render();
-    signInWithPhoneNumber(Auth, `+91${phone}`, recaptchaVerifier).then((response) => {
-      setRes(response);
-    });
+    const ress = await signInWithPhoneNumber(Auth, `+91${phone}`, recaptchaVerifier);
+    if (ress) {
+      setRes(ress);
+      const element = document.getElementById('recaptcha-seeker-container');
+      element.style.display = 'none';
+      setOtp(true);
+      toast.success('OTP has been sent successfully');
+    }
   }
   const handleVerification = () => {
     try {
       setUpRecaptcha(phone);
-      setOtp(true);
-      toast.success('OTP has been sent successfully');
     } catch (error) {
       console.log(error.message);
       toast.error(error.message);
@@ -212,6 +215,7 @@ function Signup() {
                   />
                   { !verified ? (<button type="button" className="bg-[#0800ff] text-white w-20 h-10 rounded-lg p-2 " onClick={handleVerificationOtp}>VERIFY</button>) : (<VerifiedIcon className="text-[blue] w-16 h-14" />)}
                 </div>
+                {!verified && (
                 <div className="flex w-full justify-between items-center mt-2">
                   {seconds > 0 || minutes > 0 ? (
                     <p className="text-xl text-black">
@@ -233,6 +237,7 @@ function Signup() {
                   </Button>
                   )}
                 </div>
+                )}
               </div>
             </div>
           )

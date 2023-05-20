@@ -464,3 +464,21 @@ export const search = async (track, role) => {
     return error.response.data.error;
   }
 };
+
+export const getVerify = async (id) => {
+  try {
+    console.log(id);
+    const response = await axios.put(`/artist/get-verified/${id}`, {}, {
+      withCredentials: true,
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('artistToken')}`,
+      },
+    });
+    const { data } = response;
+    if (data) {
+      return data;
+    }
+  } catch (error) {
+    return error.response.data.error;
+  }
+};

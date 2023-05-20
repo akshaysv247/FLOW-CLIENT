@@ -107,13 +107,13 @@ function Login() {
                   id="email"
                   name="email"
                   type="email"
-                  className="bg-transparent border-b border-black text-white px-2 h-10"
+                  className="bg-transparent border-b border-black text-white px-2 h-10 outline-none"
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   value={formik.values.email}
                 />
                 {formik.touched.email && formik.errors.email ? (
-                  <p className="text-red-500">{formik.errors.email}</p>
+                  <p className="text-[#000000c0]">{formik.errors.email}</p>
                 ) : null}
               </div>
               <div className="w-full flex flex-col">
@@ -123,13 +123,13 @@ function Login() {
                   name="password"
                   type="password"
                   label="password"
-                  className="bg-transparent border-b border-black text-white px-2 h-10"
+                  className="bg-transparent border-b border-black text-white px-2 h-10 outline-none"
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   value={formik.values.password}
                 />
                 {formik.touched.password && formik.errors.password ? (
-                  <p className="text-red-500">{formik.errors.password}</p>
+                  <p className="text-[#000000c0]">{formik.errors.password}</p>
                 ) : null}
               </div>
             </div>
@@ -162,7 +162,6 @@ function Login() {
                 </button>
               </Link>
             </div>
-            <Link to="/admin/login">login as Admin</Link>
           </form>
           <div className="flex items-center justify-center">
             <Link to="/artist/login">

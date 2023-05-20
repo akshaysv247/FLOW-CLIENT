@@ -1,5 +1,6 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import AddTrack from '../components/ArtistComponents/AddTrack';
 import Track from '../components/ArtistComponents/Track';
 import ArtistHomePage from '../pages/ArtistPages/ArtistHomePage';
@@ -15,19 +16,16 @@ import ArtistListOverview from '../pages/ArtistPages/ArtistListOverview';
 import ArtistLikedSongs from '../pages/ArtistPages/ArtistLikedSongs';
 
 function ArtistRoutes() {
+  const { artistToken } = useSelector((state) => state.artist);
   return (
     <Routes>
       <Route
         path="/login"
-        element={(
-          <ArtistLoginPage />
-        )}
+        element={artistToken ? <ArtistHomePage /> : <ArtistLoginPage />}
       />
       <Route
         path="/signup"
-        element={(
-          <ArtistSignupPage />
-        )}
+        element={artistToken ? <ArtistHomePage /> : <ArtistSignupPage />}
       />
       <Route elememt={(<ArtistProtectedRoute />)}>
         <Route

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 import ResetPassword from '../components/HelperComponents/ResetPassword';
 import HomePage from '../pages/HomePage';
@@ -18,23 +19,24 @@ import ArtistOverviewPage from '../pages/ArtistOverviewPage';
 import { UserProtectedRoute } from '../utils/ProtectedRoute';
 
 function UserRoutes() {
+  const { token } = useSelector((state) => state.user);
   return (
     <Routes>
       <Route
         path="/"
-        element={(<LoginPage />)}
+        element={token ? <HomePage /> : <LoginPage />}
       />
       <Route
         path="/ForgetPassword"
-        element={(<ResetPassword />)}
+        element={token ? <HomePage /> : <ResetPassword />}
       />
       <Route
         path="/signOps"
-        element={(<SignOpsPage />)}
+        element={token ? <HomePage /> : <SignOpsPage />}
       />
       <Route
         path="/signup"
-        element={(<SignupPage />)}
+        element={token ? <HomePage /> : <SignupPage />}
       />
       <Route element={(<UserProtectedRoute />)}>
         <Route
