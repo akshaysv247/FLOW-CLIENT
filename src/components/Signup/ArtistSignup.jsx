@@ -202,7 +202,7 @@ function artistSignup() {
               })}
               onChange={(e) => setPhone(e.target.value)}
             />
-            {(phone.length >= 10 && otp) && (
+            {(phone.length >= 10 && !verified) && (
               <button
                 type="button"
                 className="bg-[#0800ff] text-white w-20 h-10 rounded-lg p-2 "

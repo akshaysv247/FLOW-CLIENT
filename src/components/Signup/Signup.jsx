@@ -198,7 +198,7 @@ function Signup() {
               })}
               onChange={(e) => setPhone(e.target.value)}
             />
-            {(phone.length >= 10 && otp) && <button type="button" className="bg-[#0800ff] text-white w-20 h-10 rounded-lg p-2 " onClick={handleVerification}>Confirm</button>}
+            {(phone.length >= 10 && !verified) && <button type="button" className="bg-[#0800ff] text-white w-20 h-10 rounded-lg p-2 " onClick={handleVerification}>Confirm</button>}
           </div>
           {errors?.phone && <span className="text-[red]">{errors.phone.message}</span>}
           <div id="recaptcha-seeker-container" />
