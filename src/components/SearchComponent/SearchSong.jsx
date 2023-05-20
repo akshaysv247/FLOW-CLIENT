@@ -16,9 +16,6 @@ function SearchSong({ item }) {
       songActions.setSongDetails({
         song: item,
       }),
-      songActions.setPlaylist({
-        played: item,
-      }),
     );
   };
   return (
