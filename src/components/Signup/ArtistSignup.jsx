@@ -109,6 +109,7 @@ function artistSignup() {
         console.log(result);
         toast.success(result.message);
         setVerified(true);
+        setOtp(false);
       });
     } catch (error) {
       console.log(error.message);
@@ -201,7 +202,7 @@ function artistSignup() {
               })}
               onChange={(e) => setPhone(e.target.value)}
             />
-            {phone.length >= 10 && (
+            {(phone.length >= 10 && otp) && (
               <button
                 type="button"
                 className="bg-[#0800ff] text-white w-20 h-10 rounded-lg p-2 "
