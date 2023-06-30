@@ -10,7 +10,6 @@ function SearchSong({ item }) {
   const dispatch = useDispatch();
 
   const playsong = () => {
-    // setSong(item);
     setPlaying(true);
     dispatch(
       songActions.setSongDetails({

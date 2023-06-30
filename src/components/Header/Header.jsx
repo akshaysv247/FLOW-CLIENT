@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import HomeIcon from '@mui/icons-material/Home';
 import SearchIcon from '@mui/icons-material/Search';
-// import IconButton from '@mui/material/IconButton';
 import InputBase from '@mui/material/InputBase';
 import Avatar from '@mui/material/Avatar';
 import { useSelector, useDispatch } from 'react-redux';
@@ -53,7 +52,6 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   color: 'inherit',
   '& .MuiInputBase-input': {
     padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
     transition: theme.transitions.create('width'),
     width: '100%',
@@ -137,7 +135,6 @@ function Header() {
               </Search>
               <select value={item} className="bg-[#240d42c4] h-[2.3rem] text-sm text-gray-500 rounded-md" onChange={(e) => setItem(e.target.value)}>
                 <option>Tracks</option>
-                {/* <option>Playlist</option> */}
                 <option>Artist</option>
               </select>
             </form>
